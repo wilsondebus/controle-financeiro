@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>
+    Pagamentos | Finance
+  </title>
+
+  <link rel="stylesheet"
+        th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- MENU -->
+
+  <div th:replace="~{fragments/menu :: menu}">
+  </div>
+
+
+  <main class="content narrow">
+
+
+    <!-- CABEÇALHO -->
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          Configurações
+        </p>
+
+        <h1>
+          Formas de pagamento
+        </h1>
+
+      </div>
+
+
+      <a class="btn btn-secondary"
+         th:href="@{/cartoes}">
+
+        Gerenciar cartões
+
+      </a>
+
+    </div>
+
+
+    <!-- CADASTRO -->
+
+    <div class="dashboard-panel">
+
+
+      <div class="panel-header">
+
+        <h2>
+          Nova forma de pagamento
+        </h2>
+
+        <p>
+          Cadastre as formas que você utiliza no dia a dia.
+        </p>
+
+      </div>
+
+
+      <form
+              th:action="@{/pagamentos/salvar}"
+              th:object="${novaForma}"
+              method="post">
+
+
+        <div class="form-grid">
+
+
+          <!-- NOME -->
+
+          <div class="field">
+
+            <label for="nome">
+              Nome
+            </label>
+
+
+            <input
+                    id="nome"
+                    type="text"
+                    th:field="*{nome}"
+                    placeholder="Ex.: PIX Nubank"
+                    required>
+
+          </div>
+
+
+          <!-- TIPO -->
+
+          <div class="field">
+
+            <label for="tipo">
+              Tipo
+            </label>
+
+
+            <select
+                    id="tipo"
+                    th:field="*{tipo}"
+                    required>
+
+
+              <option value="">
+                Selecione
+              </option>
+
+
+              <option
+                      th:each="tipo : ${tipos}"
+                      th:value="${tipo}"
+                      th:text="${tipo.descricao}">
+              </option>
+
+
+            </select>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+                  type="submit"
+                  class="btn btn-primary">
+
+            + Adicionar
+
+          </button>
+
+        </div>
+
+
+      </form>
+
+
+    </div>
+
+
+    <!-- LISTA -->
+
+    <section class="section">
+
+
+      <div class="section-title">
+
+        <div>
+
+          <h2>
+            Formas cadastradas
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="list-card">
+
+
+        <div
+                th:if="${#lists.isEmpty(formas)}"
+                class="empty-state">
+
+          Nenhuma forma de pagamento cadastrada.
+
+        </div>
+
+
+        <div
+                th:each="forma : ${formas}"
+                class="list-row">
+
+
+          <div class="payment-info">
+
+
+            <div
+                    class="payment-icon"
+                    th:text="${forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).PIX ? 'P' :
+                                         forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).CREDITO ? 'C' :
+                                         forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).DEBITO ? 'D' :
+                                         forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).DINHEIRO ? '$' : '?'}">
+
+              $
+
+            </div>
+
+
+            <div>
+
+              <strong
+                      th:text="${forma.nome}">
+
+                PIX Nubank
+
+              </strong>
+
+
+              <span
+                      th:text="${forma.tipo.descricao}">
+
+                                PIX
+
+                            </span>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="actions">
+
+
+            <a
+                    class="danger-link"
+                    th:href="@{/pagamentos/excluir/{id}(id=${forma.id})}"
+                    onclick="return confirm('Deseja excluir esta forma de pagamento?')">
+
+              Excluir
+
+            </a>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+</div>
+
+</body>
+
+</html>

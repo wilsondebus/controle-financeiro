@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>
+        Parcelas | Finance
+    </title>
+
+    <link rel="stylesheet"
+          href="/css/style.css">
+
+</head>
+
+<body>
+
+
+<div class="layout">
+
+
+    <div th:replace=
+                 "~{fragments/menu :: menu}">
+    </div>
+
+
+    <main class="content narrow">
+
+
+        <div class="page-header">
+
+
+            <div>
+
+                <p class="eyebrow">
+                    Parcelas
+                </p>
+
+                <h1
+                        th:text="${gasto.descricao}">
+
+                    Compra
+
+                </h1>
+
+            </div>
+
+
+            <a
+                    class="btn btn-secondary"
+                    href="/gastos">
+
+                Voltar
+
+            </a>
+
+
+        </div>
+
+
+        <div class="list-card">
+
+
+            <div
+                    th:each="parcela : ${parcelas}"
+                    class="list-row">
+
+
+                <div>
+
+                    <strong
+                            th:text=
+                                    "${parcela.numeroParcela
+                                    + '/'
+                                    + parcela.totalParcelas}">
+
+                        1/3
+
+                    </strong>
+
+
+                    <span
+                            th:text=
+                                    "${#temporals.format(
+                                    parcela.vencimento,
+                                    'dd/MM/yyyy'
+                                    )}">
+
+                    </span>
+
+                </div>
+
+
+                <div class="right">
+
+
+                    <strong
+                            th:text=
+                                    "${#numbers.formatCurrency(
+                                    parcela.valor
+                                    )}">
+
+                    </strong>
+
+
+                    <a
+                            class="status"
+                            th:classappend=
+                                    "${parcela.paga}
+                                    ? ' status-paid'
+                                    : ' status-open'"
+                            th:href=
+                                    "@{/gastos/parcela/{id}/alternar(
+                                    id=${parcela.id},
+                                    gastoId=${gasto.id}
+                                    )}"
+                            th:text=
+                                    "${parcela.paga
+                                    ? 'Paga'
+                                    : 'Pendente'}">
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

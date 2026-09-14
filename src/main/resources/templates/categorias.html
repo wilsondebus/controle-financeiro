@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>
+    Categorias | Finance
+  </title>
+
+  <link rel="stylesheet"
+        th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+
+<div class="layout">
+
+
+  <!-- MENU LATERAL -->
+
+  <div th:replace="~{fragments/menu :: menu}">
+  </div>
+
+
+  <!-- CONTEÚDO PRINCIPAL -->
+
+  <main class="content narrow">
+
+
+    <!-- CABEÇALHO -->
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          Configurações
+        </p>
+
+        <h1>
+          Categorias
+        </h1>
+
+      </div>
+
+    </div>
+
+
+    <!-- FORMULÁRIO -->
+
+    <div class="dashboard-panel">
+
+
+      <div class="panel-header">
+
+        <h2>
+          Nova categoria
+        </h2>
+
+        <p>
+          Crie categorias para organizar seus gastos.
+        </p>
+
+      </div>
+
+
+      <form
+              th:action="@{/categorias/salvar}"
+              th:object="${novaCategoria}"
+              method="post">
+
+
+        <div class="form-grid">
+
+
+          <div class="field field-full">
+
+            <label for="nome">
+              Nome da categoria
+            </label>
+
+
+            <input
+                    id="nome"
+                    type="text"
+                    th:field="*{nome}"
+                    placeholder="Ex.: Academia, Viagens, Pets..."
+                    required>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+                  type="submit"
+                  class="btn btn-primary">
+
+            + Adicionar categoria
+
+          </button>
+
+        </div>
+
+
+      </form>
+
+
+    </div>
+
+
+    <!-- LISTA DE CATEGORIAS -->
+
+    <section class="section">
+
+
+      <div class="section-title">
+
+        <div>
+
+          <h2>
+            Categorias cadastradas
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="list-card">
+
+
+        <!-- CASO NÃO TENHA CATEGORIA -->
+
+        <div
+                th:if="${#lists.isEmpty(categorias)}"
+                class="empty-state">
+
+          Nenhuma categoria cadastrada.
+
+        </div>
+
+
+        <!-- LISTA -->
+
+        <div
+                th:each="categoria : ${categorias}"
+                class="list-row">
+
+
+          <div class="category-info">
+
+
+            <div class="category-icon">
+              $
+            </div>
+
+
+            <div>
+
+              <strong
+                      th:text="${categoria.nome}">
+
+                Categoria
+
+              </strong>
+
+
+              <span>
+                                Categoria de gasto
+                            </span>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="actions">
+
+
+            <a
+                    class="danger-link"
+                    th:href="@{/categorias/excluir/{id}(id=${categoria.id})}"
+                    onclick="return confirm('Deseja excluir esta categoria?')">
+
+              Excluir
+
+            </a>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+</div>
+
+
+</body>
+
+</html>

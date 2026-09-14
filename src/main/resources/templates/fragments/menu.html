@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<aside th:fragment="menu" class="sidebar">
+
+  <div>
+
+    <a class="brand" th:href="@{/}">
+      <div class="brand-icon">$</div>
+
+      <div>
+        <strong>Finance</strong>
+        <span>Controle pessoal</span>
+      </div>
+    </a>
+
+
+    <nav class="sidebar-nav">
+
+      <a th:href="@{/}" class="nav-item">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+        </svg>
+
+        <span>Dashboard</span>
+
+      </a>
+
+
+      <a th:href="@{/gastos}" class="nav-item">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45C5.09 14.32 5 14.65 5 15c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+
+        <span>Gastos</span>
+
+      </a>
+
+
+      <a th:href="@{/pagamentos}" class="nav-item">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H3v-6h18v6zm0-10H3V6h18v2z"/>
+        </svg>
+
+        <span>Pagamentos</span>
+
+      </a>
+
+
+      <a th:href="@{/cartoes}" class="nav-item">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+        </svg>
+
+        <span>Cartões</span>
+
+      </a>
+
+
+      <a th:href="@{/categorias}" class="nav-item">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h11c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+        </svg>
+
+        <span>Categorias</span>
+
+      </a>
+
+
+      <a th:href="@{/compras-futuras}" class="nav-item">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M19 8H5V6h14v2zm0 2H5v8h14v-8zm-9 2h4v2h-4v-2z"/>
+        </svg>
+
+        <span>Compras futuras</span>
+
+      </a>
+
+    </nav>
+
+  </div>
+
+
+  <div class="sidebar-footer">
+    <div class="user-circle">
+      F
+    </div>
+
+    <div>
+      <strong>Uso pessoal</strong>
+      <span>Finance</span>
+    </div>
+  </div>
+
+</aside>
+
+</body>
+</html>

@@ -7,22 +7,31 @@ import java.time.LocalDate;
 public class Gasto {
 
     private Long id;
+
     private String descricao;
+
     private double valor;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data;
 
     private Long categoriaId;
-    private Long formaPagamento;
+
+    private Long formaPagamentoId;
+
     private Long cartaoId;
+
     private boolean parcelado;
+
     private int quantidadeParcelas = 1;
+
     private boolean possuiJuros;
+
     private double valorTotalComJuros;
+
     private String observacao;
 
-    public Gasto(){
+    public Gasto() {
     }
 
     public Long getId() {
@@ -61,16 +70,16 @@ public class Gasto {
         return categoriaId;
     }
 
-    public void setCategoriaId(Long categoriaID) {
-        this.categoriaId = categoriaID;
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
-    public Long getFormaPagamento() {
-        return formaPagamento;
+    public Long getFormaPagamentoId() {
+        return formaPagamentoId;
     }
 
-    public void setFormaPagamento(Long formaPagamento) {
-        this.formaPagamento = formaPagamento;
+    public void setFormaPagamentoId(Long formaPagamentoId) {
+        this.formaPagamentoId = formaPagamentoId;
     }
 
     public Long getCartaoId() {

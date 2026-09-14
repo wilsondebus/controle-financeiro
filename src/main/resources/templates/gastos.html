@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>
+    Gastos | Finance
+  </title>
+
+  <link rel="stylesheet"
+        href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <div th:replace=
+               "~{fragments/menu :: menu}">
+  </div>
+
+
+  <main class="content">
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          Movimentações
+        </p>
+
+        <h1>
+          Gastos
+        </h1>
+
+      </div>
+
+
+      <a
+              class="btn btn-primary"
+              href="/gastos/novo">
+
+        + Novo gasto
+
+      </a>
+
+    </div>
+
+
+    <div class="table-card">
+
+      <div
+              th:if="${#lists.isEmpty(gastos)}"
+              class="empty-state">
+
+        Nenhum gasto cadastrado.
+
+      </div>
+
+
+      <div
+              class="table-responsive"
+              th:if="${!#lists.isEmpty(gastos)}">
+
+
+        <table>
+
+          <thead>
+
+          <tr>
+
+            <th>
+              Descrição
+            </th>
+
+            <th>
+              Data
+            </th>
+
+            <th>
+              Categoria
+            </th>
+
+            <th>
+              Pagamento
+            </th>
+
+            <th>
+              Valor
+            </th>
+
+            <th>
+            </th>
+
+          </tr>
+
+          </thead>
+
+
+          <tbody>
+
+
+          <tr th:each="gasto : ${gastos}">
+
+            <td>
+
+              <strong
+                      th:text="${gasto.descricao}">
+
+                Descrição
+
+              </strong>
+
+
+              <small
+                      th:if="${gasto.parcelado}"
+                      th:text=
+                              "${gasto.quantidadeParcelas}
+                                            + ' parcelas'">
+
+              </small>
+
+            </td>
+
+
+            <td
+                    th:text=
+                            "${#temporals.format(
+                                        gasto.data,
+                                        'dd/MM/yyyy'
+                                        )}">
+
+            </td>
+
+
+            <td
+                    th:text=
+                            "${categoriaService.nomePorId(
+                                        gasto.categoriaId
+                                        )}">
+
+            </td>
+
+
+            <td>
+
+                            <span
+                                    th:text=
+                                            "${formaPagamentoService.nomePorId(
+                                            gasto.formaPagamentoId
+                                            )}">
+
+                            </span>
+
+
+              <small
+                      th:if="${gasto.cartaoId != null}"
+                      th:text=
+                              "${cartaoService.nomePorId(
+                                            gasto.cartaoId
+                                            )}">
+
+              </small>
+
+            </td>
+
+
+            <td
+                    th:text=
+                            "${#numbers.formatCurrency(
+                                        gasto.valor
+                                        )}">
+
+            </td>
+
+
+            <td class="actions">
+
+
+              <a
+                      th:href=
+                              "@{/gastos/{id}/parcelas(
+                                            id=${gasto.id}
+                                            )}">
+
+                Parcelas
+
+              </a>
+
+
+              <a
+                      th:href=
+                              "@{/gastos/editar/{id}(
+                                            id=${gasto.id}
+                                            )}">
+
+                Editar
+
+              </a>
+
+
+              <a
+                      class="danger-link"
+                      th:href=
+                              "@{/gastos/excluir/{id}(
+                                            id=${gasto.id}
+                                            )}"
+                      onclick=
+                              "return confirm(
+                                            'Deseja excluir este gasto?'
+                                            )">
+
+                Excluir
+
+              </a>
+
+            </td>
+
+          </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+
+</html>

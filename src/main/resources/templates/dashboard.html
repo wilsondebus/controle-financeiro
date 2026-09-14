@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>
+        Dashboard | Finance
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+    <!-- Biblioteca do gráfico -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- MENU LATERAL -->
+
+    <div th:replace="~{fragments/menu :: menu}">
+    </div>
+
+
+    <!-- CONTEÚDO PRINCIPAL -->
+
+    <main class="content">
+
+
+        <!-- CABEÇALHO -->
+
+        <div class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    Visão geral
+                </p>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+            </div>
+
+
+            <a class="btn btn-primary"
+               th:href="@{/gastos/novo}">
+
+                + Novo gasto
+
+            </a>
+
+        </div>
+
+
+        <!-- CARDS SUPERIORES -->
+
+        <section class="cards cards-2">
+
+
+            <!-- TOTAL DO MÊS -->
+
+            <article class="card hero-card">
+
+                <span>
+                    Gastos do mês
+                </span>
+
+
+                <strong
+                        th:text="${#numbers.formatCurrency(totalMes)}">
+
+                    R$ 0,00
+
+                </strong>
+
+
+                <small>
+                    Total previsto para este mês
+                </small>
+
+            </article>
+
+
+            <!-- QUANTIDADE DE FATURAS -->
+
+            <article class="card">
+
+                <span>
+                    Faturas próximas
+                </span>
+
+
+                <strong
+                        th:text="${#lists.size(faturas)}">
+
+                    0
+
+                </strong>
+
+
+                <small>
+                    Próximos 40 dias
+                </small>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- FATURAS PRÓXIMAS -->
+
+        <section
+                th:if="${!#lists.isEmpty(faturas)}"
+                class="section">
+
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        Próximas faturas
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="list-card">
+
+
+                <div
+                        th:each="fatura : ${faturas}"
+                        class="list-row"
+                        th:classappend="${fatura.proxima}
+                        ? ' warning-row'
+                        : ''">
+
+
+                    <!-- CARTÃO + VENCIMENTO -->
+
+                    <div>
+
+                        <strong
+                                th:text="${fatura.cartaoNome}">
+
+                            Cartão
+
+                        </strong>
+
+
+                        <span
+                                th:text="${#temporals.format(
+                                fatura.vencimento,
+                                'dd/MM/yyyy'
+                                )}">
+
+                            10/09/2026
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- VALOR + AVISO -->
+
+                    <div class="right">
+
+
+                        <strong
+                                th:text="${#numbers.formatCurrency(
+                                fatura.valor
+                                )}">
+
+                            R$ 0,00
+
+                        </strong>
+
+
+                        <span
+                                th:if="${fatura.proxima}"
+                                th:text="'Vence em '
+                                + ${fatura.diasParaVencimento}
+                                + ' dia(s)'">
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ÁREA PRINCIPAL -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- GRÁFICO -->
+
+            <div class="dashboard-panel">
+
+
+                <div class="panel-header">
+
+                    <h2>
+                        Gastos por categoria
+                    </h2>
+
+                    <p>
+                        Distribuição dos seus gastos neste mês
+                    </p>
+
+                </div>
+
+
+                <!-- SEM GASTOS -->
+
+                <div
+                        th:if="${#maps.isEmpty(gastosCategoria)}"
+                        class="empty-state">
+
+                    Nenhum gasto cadastrado neste mês.
+
+                </div>
+
+
+                <!-- COM GASTOS -->
+
+                <div th:if="${!#maps.isEmpty(gastosCategoria)}">
+
+
+                    <!-- GRÁFICO -->
+
+                    <div class="chart-container">
+
+
+                        <canvas id="graficoCategorias">
+                        </canvas>
+
+
+                        <!-- CENTRO DO GRÁFICO -->
+
+                        <div class="chart-center">
+
+                            <span>
+                                Total
+                            </span>
+
+
+                            <strong
+                                    th:text="${#numbers.formatCurrency(
+                                    totalMes
+                                    )}">
+
+                                R$ 0,00
+
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- LEGENDA -->
+
+                    <div class="category-legend">
+
+
+                        <div
+                                class="category-item"
+                                th:each="item : ${gastosCategoria}">
+
+
+                            <div class="category-info">
+
+
+                                <span class="category-color">
+                                </span>
+
+
+                                <span th:text="${item.key}">
+
+                                    Categoria
+
+                                </span>
+
+
+                            </div>
+
+
+                            <span
+                                    class="category-value"
+                                    th:text="${#numbers.formatCurrency(
+                                    item.value
+                                    )}">
+
+                                R$ 0,00
+
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ÚLTIMOS GASTOS -->
+
+            <div class="dashboard-panel">
+
+
+                <div class="section-title">
+
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Últimos gastos
+                        </h2>
+
+                        <p>
+                            Movimentações mais recentes
+                        </p>
+
+                    </div>
+
+
+                    <a th:href="@{/gastos}">
+                        Ver todos
+                    </a>
+
+
+                </div>
+
+
+                <div class="list-card">
+
+
+                    <!-- SEM GASTOS -->
+
+                    <div
+                            th:if="${#lists.isEmpty(ultimosGastos)}"
+                            class="empty-state">
+
+                        Nenhum gasto cadastrado.
+
+                    </div>
+
+
+                    <!-- LISTA DE GASTOS -->
+
+                    <div
+                            th:each="gasto : ${ultimosGastos}"
+                            class="list-row">
+
+
+                        <div>
+
+
+                            <strong
+                                    th:text="${gasto.descricao}">
+
+                                Mercado
+
+                            </strong>
+
+
+                            <span
+                                    th:text="${#temporals.format(
+                                    gasto.data,
+                                    'dd/MM/yyyy'
+                                    )}">
+
+                                14/09/2026
+
+                            </span>
+
+
+                        </div>
+
+
+                        <strong
+                                th:text="${#numbers.formatCurrency(
+                                gasto.valor
+                                )}">
+
+                            R$ 0,00
+
+                        </strong>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- JAVASCRIPT DO GRÁFICO -->
+
+<script th:inline="javascript">
+
+
+    /*
+     * Esse objeto vem diretamente do:
+     *
+     * DashboardController
+     *
+     * gastosCategoria
+     *
+     * Exemplo:
+     *
+     * {
+     *   "Alimentação": 500,
+     *   "Lazer": 200,
+     *   "Transporte": 300
+     * }
+     */
+
+    const dadosCategorias =
+        /*[[${gastosCategoria}]]*/ {};
+
+
+    /*
+     * Pegamos somente os nomes:
+     *
+     * Alimentação
+     * Transporte
+     * Lazer
+     */
+
+    const categorias =
+        Object.keys(
+            dadosCategorias
+        );
+
+
+    /*
+     * Pegamos somente os valores:
+     *
+     * 500
+     * 300
+     * 200
+     */
+
+    const valores =
+        Object.values(
+            dadosCategorias
+        );
+
+
+    /*
+     * Cada categoria vai receber
+     * uma cor do array abaixo.
+     */
+
+    const cores = [
+
+        "#7C8CFF",
+
+        "#56D6A9",
+
+        "#FFBA69",
+
+        "#ED6A8A",
+
+        "#62C5F5",
+
+        "#B58CFF",
+
+        "#E7DB6E",
+
+        "#6EE7DC",
+
+        "#FF8F70",
+
+        "#9DD86C"
+
+    ];
+
+
+    const canvas =
+        document.getElementById(
+            "graficoCategorias"
+        );
+
+
+    /*
+     * Só cria o gráfico se houver
+     * categorias cadastradas.
+     */
+
+    if (
+        canvas
+        && categorias.length > 0
+    ) {
+
+
+        new Chart(
+
+            canvas,
+
+            {
+
+                /*
+                 * doughnut =
+                 * gráfico de rosca
+                 */
+
+                type: "doughnut",
+
+
+                data: {
+
+
+                    labels:
+                        categorias,
+
+
+                    datasets: [
+
+                        {
+
+                            /*
+                             * Valores usados para
+                             * calcular o tamanho
+                             * de cada pedaço.
+                             */
+
+                            data:
+                                valores,
+
+
+                            /*
+                             * Cor de cada categoria.
+                             */
+
+                            backgroundColor:
+                                cores,
+
+
+                            /*
+                             * Remove bordas
+                             * entre os pedaços.
+                             */
+
+                            borderWidth:
+                                0,
+
+
+                            /*
+                             * Ao passar o mouse,
+                             * o pedaço se destaca
+                             * um pouco.
+                             */
+
+                            hoverOffset:
+                                7
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+
+                    responsive:
+                        true,
+
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    /*
+                     * Define o tamanho do espaço
+                     * central do gráfico.
+                     *
+                     * Quanto maior,
+                     * mais fina fica a rosca.
+                     */
+
+                    cutout:
+                        "72%",
+
+
+                    plugins: {
+
+
+                        /*
+                         * Não usamos a legenda
+                         * padrão do Chart.js
+                         * porque criamos nossa
+                         * própria legenda abaixo.
+                         */
+
+                        legend: {
+
+                            display:
+                                false
+
+                        },
+
+
+                        /*
+                         * Informações exibidas
+                         * quando o mouse fica
+                         * sobre alguma categoria.
+                         */
+
+                        tooltip: {
+
+
+                            callbacks: {
+
+
+                                label:
+                                    function(context) {
+
+
+                                        const valor =
+                                            context.raw;
+
+
+                                        const total =
+                                            valores.reduce(
+
+                                                function(
+                                                    acumulador,
+                                                    numero
+                                                ) {
+
+                                                    return (
+                                                        acumulador
+                                                        + numero
+                                                    );
+
+                                                },
+
+                                                0
+
+                                            );
+
+
+                                        /*
+                                         * Calcula a porcentagem
+                                         * daquela categoria.
+                                         */
+
+                                        const percentual =
+                                            total > 0
+
+                                                ? (
+                                                    valor
+                                                    / total
+                                                    * 100
+                                                )
+
+                                                : 0;
+
+
+                                        /*
+                                         * Formata para Real.
+                                         */
+
+                                        const valorFormatado =
+                                            valor.toLocaleString(
+
+                                                "pt-BR",
+
+                                                {
+
+                                                    style:
+                                                        "currency",
+
+                                                    currency:
+                                                        "BRL"
+
+                                                }
+
+                                            );
+
+
+                                        return (
+
+                                            context.label
+
+                                            + ": "
+
+                                            + valorFormatado
+
+                                            + " ("
+
+                                            + percentual.toFixed(1)
+
+                                            + "%)"
+
+                                        );
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+        /*
+         * Define as mesmas cores
+         * na legenda abaixo do gráfico.
+         */
+
+        const marcadores =
+            document.querySelectorAll(
+                ".category-color"
+            );
+
+
+        marcadores.forEach(
+
+            function(
+                marcador,
+                indice
+            ) {
+
+
+                marcador.style.backgroundColor =
+
+                    cores[
+                        indice
+                        % cores.length
+                    ];
+
+            }
+
+        );
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

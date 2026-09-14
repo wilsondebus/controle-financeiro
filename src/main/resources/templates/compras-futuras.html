@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>
+    Compras futuras | Finance
+  </title>
+
+  <link rel="stylesheet"
+        th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+
+<div class="layout">
+
+
+  <!-- MENU -->
+
+  <div th:replace="~{fragments/menu :: menu}">
+  </div>
+
+
+  <!-- CONTEÚDO -->
+
+  <main class="content">
+
+
+    <!-- CABEÇALHO -->
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          Planejamento
+        </p>
+
+        <h1>
+          Compras futuras
+        </h1>
+
+      </div>
+
+    </div>
+
+
+    <!-- FORMULÁRIO -->
+
+    <div class="dashboard-panel">
+
+
+      <div class="panel-header">
+
+        <h2>
+          Planejar nova compra
+        </h2>
+
+        <p>
+          Registre algo que você pretende comprar futuramente.
+        </p>
+
+      </div>
+
+
+      <form
+              th:action="@{/compras-futuras/salvar}"
+              th:object="${novaCompra}"
+              method="post">
+
+
+        <div class="form-grid">
+
+
+          <!-- DESCRIÇÃO -->
+
+          <div class="field">
+
+            <label for="descricao">
+              O que pretende comprar?
+            </label>
+
+
+            <input
+                    id="descricao"
+                    type="text"
+                    th:field="*{descricao}"
+                    placeholder="Ex.: SSD 1TB"
+                    required>
+
+          </div>
+
+
+          <!-- VALOR -->
+
+          <div class="field">
+
+            <label for="valorEstimado">
+              Valor estimado
+            </label>
+
+
+            <input
+                    id="valorEstimado"
+                    type="number"
+                    th:field="*{valorEstimado}"
+                    min="0"
+                    step="0.01"
+                    placeholder="Ex.: 450.00"
+                    required>
+
+          </div>
+
+
+          <!-- DATA -->
+
+          <div class="field">
+
+            <label for="dataPrevista">
+              Data prevista
+            </label>
+
+
+            <input
+                    id="dataPrevista"
+                    type="date"
+                    th:field="*{dataPrevista}">
+
+          </div>
+
+
+          <!-- OBSERVAÇÃO -->
+
+          <div class="field">
+
+            <label for="observacao">
+              Observação
+            </label>
+
+
+            <input
+                    id="observacao"
+                    type="text"
+                    th:field="*{observacao}"
+                    placeholder="Ex.: Esperar promoção">
+
+          </div>
+
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+                  class="btn btn-primary"
+                  type="submit">
+
+            + Adicionar compra
+
+          </button>
+
+        </div>
+
+
+      </form>
+
+
+    </div>
+
+
+    <!-- LISTA DE COMPRAS -->
+
+    <section class="section">
+
+
+      <div class="section-title">
+
+        <div>
+
+          <h2>
+            Planejamentos
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <!-- SEM COMPRAS -->
+
+      <div
+              th:if="${#lists.isEmpty(compras)}"
+              class="empty-state">
+
+        Nenhuma compra futura cadastrada.
+
+      </div>
+
+
+      <!-- CARDS -->
+
+      <div
+              class="cards cards-3"
+              th:if="${!#lists.isEmpty(compras)}">
+
+
+        <article
+                th:each="compra : ${compras}"
+                class="future-card"
+                th:classappend="${compra.realizada}
+                        ? ' completed'
+                        : ''">
+
+
+          <!-- TOPO -->
+
+          <div class="future-card-header">
+
+
+            <div>
+
+
+                            <span
+                                    class="future-status"
+                                    th:classappend="${compra.realizada}
+                                    ? ' future-status-done'
+                                    : ' future-status-pending'"
+                                    th:text="${compra.realizada
+                                    ? 'Realizada'
+                                    : 'Planejada'}">
+
+                                Planejada
+
+                            </span>
+
+
+              <h3
+                      th:text="${compra.descricao}">
+
+                SSD 1TB
+
+              </h3>
+
+
+            </div>
+
+
+            <div class="future-icon">
+
+              <svg viewBox="0 0 24 24">
+
+                <path
+                        d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45C5.09 14.32 5 14.65 5 15c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25 0-.04.01-.08.03-.12l.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+
+              </svg>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- VALOR -->
+
+          <div class="future-value">
+
+                        <span>
+                            Valor estimado
+                        </span>
+
+
+            <strong
+                    th:text="${#numbers.formatCurrency(
+                                compra.valorEstimado
+                                )}">
+
+              R$ 0,00
+
+            </strong>
+
+          </div>
+
+
+          <!-- DATA -->
+
+          <div
+                  class="future-date"
+                  th:if="${compra.dataPrevista != null}">
+
+                        <span>
+                            Compra prevista para
+                        </span>
+
+
+            <strong
+                    th:text="${#temporals.format(
+                                compra.dataPrevista,
+                                'dd/MM/yyyy'
+                                )}">
+
+              01/12/2026
+
+            </strong>
+
+          </div>
+
+
+          <!-- OBSERVAÇÃO -->
+
+          <div
+                  class="future-observation"
+                  th:if="${compra.observacao != null
+                            && !compra.observacao.isBlank()}">
+
+
+                        <span>
+                            Observação
+                        </span>
+
+
+            <p
+                    th:text="${compra.observacao}">
+
+              Esperar promoção
+
+            </p>
+
+
+          </div>
+
+
+          <!-- AÇÕES -->
+
+          <div class="future-actions">
+
+
+            <a
+                    class="future-action"
+                    th:href="@{/compras-futuras/realizada/{id}(id=${compra.id})}"
+                    th:text="${compra.realizada
+                                ? 'Marcar como planejada'
+                                : 'Marcar como realizada'}">
+
+              Marcar como realizada
+
+            </a>
+
+
+            <a
+                    class="danger-link"
+                    th:href="@{/compras-futuras/excluir/{id}(id=${compra.id})}"
+                    onclick="return confirm('Deseja excluir esta compra futura?')">
+
+              Excluir
+
+            </a>
+
+
+          </div>
+
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+</div>
+
+
+</body>
+
+</html>
