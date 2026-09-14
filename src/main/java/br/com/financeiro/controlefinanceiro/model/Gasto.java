@@ -13,7 +13,7 @@ public class Gasto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data;
 
-    private Long categoriaID;
+    private Long categoriaId;
     private Long formaPagamento;
     private Long cartaoId;
     private boolean parcelado;
@@ -57,12 +57,12 @@ public class Gasto {
         this.data = data;
     }
 
-    public Long getCategoriaID() {
-        return categoriaID;
+    public Long getCategoriaId() {
+        return categoriaId;
     }
 
-    public void setCategoriaID(Long categoriaID) {
-        this.categoriaID = categoriaID;
+    public void setCategoriaId(Long categoriaID) {
+        this.categoriaId = categoriaID;
     }
 
     public Long getFormaPagamento() {

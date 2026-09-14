@@ -1,1 +1,9 @@
-[]
+[ {
+  "id" : 1,
+  "nome" : "PIX",
+  "tipo" : "PIX"
+}, {
+  "id" : 2,
+  "nome" : "Dinheiro",
+  "tipo" : "DINHEIRO"
+} ]
