@@ -25,4 +25,7 @@
 }, {
   "id" : 9,
   "nome" : "Outros"
+}, {
+  "id" : 10,
+  "nome" : "Carteira Motorista"
 } ]

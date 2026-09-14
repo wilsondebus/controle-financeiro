@@ -1,1 +1,14 @@
-[]
+[ {
+  "cartaoId" : null,
+  "categoriaId" : 10,
+  "data" : "2026-09-11",
+  "descricao" : "Prova CNH ",
+  "formaPagamentoId" : 1,
+  "id" : 1,
+  "observacao" : "",
+  "parcelado" : false,
+  "possuiJuros" : false,
+  "quantidadeParcelas" : 1,
+  "valor" : 177.65,
+  "valorTotalComJuros" : 0.0
+} ]

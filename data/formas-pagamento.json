@@ -6,4 +6,8 @@
   "id" : 2,
   "nome" : "Dinheiro",
   "tipo" : "DINHEIRO"
+}, {
+  "id" : 3,
+  "nome" : "Débito NuBank",
+  "tipo" : "DEBITO"
 } ]

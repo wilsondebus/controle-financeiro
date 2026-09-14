@@ -1,1 +1,9 @@
-[]
+[ {
+  "gastoId" : 1,
+  "id" : 1,
+  "numeroParcela" : 1,
+  "paga" : false,
+  "totalParcelas" : 1,
+  "valor" : 177.65,
+  "vencimento" : "2026-09-11"
+} ]

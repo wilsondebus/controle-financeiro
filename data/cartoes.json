@@ -1,1 +1,19 @@
-[]
+[ {
+  "id" : 1,
+  "nome" : "Cartão NuBank",
+  "banco" : "NuBank",
+  "diaFechamento" : 9,
+  "diaVencimento" : 16
+}, {
+  "id" : 2,
+  "nome" : "Cartão PicPay",
+  "banco" : "PicPay",
+  "diaFechamento" : 17,
+  "diaVencimento" : 25
+}, {
+  "id" : 3,
+  "nome" : "Cartão Caixa",
+  "banco" : "CAIXA",
+  "diaFechamento" : 25,
+  "diaVencimento" : 5
+} ]

@@ -12,17 +12,19 @@
     --primary: #f4f7fb;
     --primary-text: #0b0d10;
 
+    --accent: #8ea2ff;
+
     --danger: #ff6b6b;
     --warning: #f7c873;
     --success: #63d297;
-
-    --icon: #8ea2ff;
 
     --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 
-/* CONFIGURAÇÕES GERAIS */
+/* =========================================
+   CONFIGURAÇÕES GERAIS
+========================================= */
 
 * {
     box-sizing: border-box;
@@ -32,14 +34,13 @@ body {
     margin: 0;
 
     background: var(--bg);
-
     color: var(--text);
 
     font-family:
-            Inter,
-            Arial,
-            Helvetica,
-            sans-serif;
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
 a {
@@ -48,7 +49,9 @@ a {
 }
 
 
-/* LAYOUT PRINCIPAL */
+/* =========================================
+   LAYOUT
+========================================= */
 
 .layout {
     min-height: 100vh;
@@ -56,35 +59,29 @@ a {
     display: grid;
 
     grid-template-columns:
-            240px
-            1fr;
+        205px
+        1fr;
 }
 
 
-/* SIDEBAR */
+/* =========================================
+   SIDEBAR
+========================================= */
 
 .sidebar {
     height: 100vh;
 
     position: sticky;
-
     top: 0;
 
     background: #080a0d;
 
-    border-right:
-            1px
-            solid
-            var(--border);
+    border-right: 1px solid var(--border);
 
-    padding:
-            26px
-            18px;
+    padding: 26px 15px;
 
     display: flex;
-
     flex-direction: column;
-
     justify-content: space-between;
 }
 
@@ -96,28 +93,29 @@ a {
 
     align-items: center;
 
-    gap: 11px;
+    gap: 10px;
 
     margin-bottom: 28px;
 }
 
 .brand-icon {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
-    border-radius: 10px;
+    flex-shrink: 0;
+
+    border-radius: 9px;
 
     background: var(--primary);
 
     color: var(--primary-text);
 
-    font-size: 18px;
+    font-size: 17px;
 
     font-weight: 900;
 }
@@ -125,11 +123,9 @@ a {
 .brand strong {
     display: block;
 
+    font-size: 16px;
+
     color: var(--text);
-
-    font-size: 17px;
-
-    font-weight: 800;
 }
 
 .brand span {
@@ -139,38 +135,34 @@ a {
 
     color: var(--muted);
 
-    font-size: 10px;
+    font-size: 9px;
 }
 
 
-/* NAVEGAÇÃO LATERAL */
+/* MENU */
 
 .sidebar-nav {
     display: flex;
 
     flex-direction: column;
 
-    gap: 4px;
-
-    margin-top: 14px;
+    gap: 5px;
 }
 
 .nav-item {
-    min-height: 42px;
+    min-height: 40px;
 
     display: flex !important;
 
+    flex-direction: row !important;
+
     align-items: center;
 
-    gap: 10px;
+    gap: 11px;
 
-    padding:
-            0
-            12px !important;
+    padding: 0 11px !important;
 
-    border-radius: 9px;
-
-    color: var(--muted);
+    border-radius: 8px;
 
     transition: 0.2s;
 }
@@ -182,41 +174,41 @@ a {
 }
 
 
-/* ÍCONES LATERAIS */
+/* ÍCONES DO MENU */
 
 .nav-item svg {
-    width: 15px;
+    width: 14px !important;
+    height: 14px !important;
 
-    height: 15px;
+    min-width: 14px;
+    max-width: 14px;
+
+    min-height: 14px;
+    max-height: 14px;
 
     flex-shrink: 0;
 
-    fill: var(--icon);
+    display: block;
 
-    opacity: 0.95;
-
-    transition: 0.2s;
-}
-
-.nav-item:hover svg {
-    fill: #ffffff;
+    fill: var(--accent);
 
     opacity: 1;
 }
 
-
-/* TEXTO DA SIDEBAR */
+.nav-item:hover svg {
+    fill: white;
+}
 
 .nav-item span {
-    color: #c7ced8;
+    color: #c8cfda;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 500;
 }
 
 .nav-item:hover span {
-    color: #ffffff;
+    color: white;
 }
 
 
@@ -229,12 +221,9 @@ a {
 
     gap: 10px;
 
-    padding-top: 18px;
+    padding-top: 17px;
 
-    border-top:
-            1px
-            solid
-            var(--border);
+    border-top: 1px solid var(--border);
 }
 
 .sidebar-footer strong {
@@ -242,7 +231,7 @@ a {
 
     color: #dce1e8;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .sidebar-footer span {
@@ -252,21 +241,17 @@ a {
 
     color: var(--muted);
 
-    font-size: 10px;
+    font-size: 9px;
 }
 
 .user-circle {
-    width: 32px;
-
-    height: 32px;
+    width: 30px;
+    height: 30px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
-
-    flex-shrink: 0;
 
     border-radius: 50%;
 
@@ -274,25 +259,27 @@ a {
 
     color: white;
 
-    font-size: 12px;
+    font-size: 11px;
 
     font-weight: bold;
 }
 
 
-/* CONTEÚDO */
+/* =========================================
+   CONTEÚDO
+========================================= */
 
 .content {
     width: 100%;
 
-    max-width: 1450px;
+    max-width: 1400px;
 
     margin: 0 auto;
 
     padding:
-            44px
-            50px
-            80px;
+        40px
+        46px
+        80px;
 }
 
 .content.narrow {
@@ -300,13 +287,14 @@ a {
 }
 
 
-/* CABEÇALHO */
+/* =========================================
+   CABEÇALHO
+========================================= */
 
 .page-header {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
     gap: 20px;
@@ -315,12 +303,9 @@ a {
 }
 
 .page-header h1 {
-    margin:
-            4px
-            0
-            0;
+    margin: 4px 0 0;
 
-    font-size: 32px;
+    font-size: 30px;
 
     letter-spacing: -0.8px;
 }
@@ -330,7 +315,7 @@ a {
 
     color: var(--muted);
 
-    font-size: 12px;
+    font-size: 11px;
 
     text-transform: uppercase;
 
@@ -338,28 +323,27 @@ a {
 }
 
 
-/* BOTÕES */
+/* =========================================
+   BOTÕES
+========================================= */
 
 .btn {
-    min-height: 42px;
+    min-height: 40px;
 
     display: inline-flex;
 
     align-items: center;
-
     justify-content: center;
 
-    padding:
-            0
-            18px;
+    padding: 0 16px;
 
     border: none;
 
-    border-radius: 10px;
+    border-radius: 9px;
 
     cursor: pointer;
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 700;
 
@@ -381,10 +365,7 @@ a {
 
     color: var(--text);
 
-    border:
-            1px
-            solid
-            var(--border);
+    border: 1px solid var(--border);
 }
 
 .btn-secondary:hover {
@@ -392,7 +373,9 @@ a {
 }
 
 
-/* CARDS */
+/* =========================================
+   CARDS GENÉRICOS
+========================================= */
 
 .cards {
     display: grid;
@@ -402,31 +385,28 @@ a {
 
 .cards-2 {
     grid-template-columns:
-            repeat(
-                    2,
-                    1fr
-            );
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
 }
 
 .cards-3 {
     grid-template-columns:
-            repeat(
-                    3,
-                    1fr
-            );
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
 }
 
 .card {
-    padding: 24px;
+    padding: 22px;
 
-    border-radius: 16px;
+    border-radius: 15px;
 
     background: var(--surface);
 
-    border:
-            1px
-            solid
-            var(--border);
+    border: 1px solid var(--border);
 
     box-shadow: var(--shadow);
 }
@@ -438,12 +418,9 @@ a {
 .card > strong {
     display: block;
 
-    margin:
-            12px
-            0
-            8px;
+    margin: 11px 0 7px;
 
-    font-size: 30px;
+    font-size: 28px;
 }
 
 .card small {
@@ -452,32 +429,33 @@ a {
 
 .hero-card {
     background:
-            linear-gradient(
-                    135deg,
-                    #171b22,
-                    #0e1116
-            );
+        linear-gradient(
+            135deg,
+            #171b22,
+            #0e1116
+        );
 
     border-color: #2b323d;
 }
 
 
-/* SEÇÕES */
+/* =========================================
+   SEÇÕES
+========================================= */
 
 .section {
-    margin-top: 32px;
+    margin-top: 30px;
 }
 
 .section-title {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
     gap: 15px;
 
-    margin-bottom: 13px;
+    margin-bottom: 14px;
 }
 
 .section-title h2 {
@@ -489,83 +467,81 @@ a {
 .section-title a {
     color: var(--muted);
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .section-title a:hover {
-    color: var(--text);
+    color: white;
 }
 
 .grid-2 {
     display: grid;
 
     grid-template-columns:
-            1fr
-            1fr;
+        1fr
+        1fr;
 
-    gap: 24px;
+    gap: 22px;
 }
 
 
-/* DASHBOARD */
+/* =========================================
+   DASHBOARD
+========================================= */
 
 .dashboard-grid {
     display: grid;
 
     grid-template-columns:
-            1.15fr
-            0.85fr;
+        1.15fr
+        0.85fr;
 
-    gap: 24px;
+    gap: 22px;
 
-    margin-top: 30px;
+    margin-top: 28px;
 }
 
 .dashboard-panel {
     background: var(--surface);
 
-    border:
-            1px
-            solid
-            var(--border);
+    border: 1px solid var(--border);
 
-    border-radius: 16px;
+    border-radius: 15px;
 
-    padding: 24px;
+    padding: 22px;
 
     box-shadow: var(--shadow);
 }
 
 .panel-header {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
 .panel-header h2 {
     margin: 0;
 
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .panel-header p {
-    margin:
-            6px
-            0
-            0;
+    margin: 5px 0 0;
 
     color: var(--muted);
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
-/* GRÁFICO */
+/* =========================================
+   GRÁFICO
+========================================= */
 
 .chart-container {
     position: relative;
 
     width: 100%;
 
-    max-width: 340px;
+    max-width: 330px;
 
     margin: 0 auto;
 
@@ -576,14 +552,9 @@ a {
     position: absolute;
 
     top: 50%;
-
     left: 50%;
 
-    transform:
-            translate(
-                    -50%,
-                    -50%
-            );
+    transform: translate(-50%, -50%);
 
     display: flex;
 
@@ -603,34 +574,37 @@ a {
 .chart-center strong {
     margin-top: 4px;
 
-    font-size: 19px;
+    font-size: 18px;
 }
 
 
-/* LEGENDA DO GRÁFICO */
+/* =========================================
+   LEGENDA DO GRÁFICO
+========================================= */
 
 .category-legend {
-    margin-top: 22px;
+    margin-top: 20px;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 11px;
+    gap: 10px;
 }
 
 .category-item {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
-    gap: 15px;
+    gap: 14px;
 }
 
 .category-info {
-    display: flex;
+    display: flex !important;
+
+    flex-direction: row !important;
 
     align-items: center;
 
@@ -639,7 +613,6 @@ a {
 
 .category-color {
     width: 8px;
-
     height: 8px;
 
     flex-shrink: 0;
@@ -650,27 +623,26 @@ a {
 .category-info span {
     color: #cbd2dc;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .category-value {
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 700;
 }
 
 
-/* LISTAS */
+/* =========================================
+   LISTAS
+========================================= */
 
 .list-card {
     background: var(--surface);
 
-    border:
-            1px
-            solid
-            var(--border);
+    border: 1px solid var(--border);
 
-    border-radius: 16px;
+    border-radius: 15px;
 
     overflow: hidden;
 
@@ -678,24 +650,18 @@ a {
 }
 
 .list-row {
-    min-height: 68px;
+    min-height: 66px;
 
-    padding:
-            14px
-            18px;
+    padding: 13px 17px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 18px;
 
-    border-bottom:
-            1px
-            solid
-            var(--border);
+    border-bottom: 1px solid var(--border);
 
     transition: 0.2s;
 }
@@ -713,13 +679,13 @@ a {
 
     flex-direction: column;
 
-    gap: 5px;
+    gap: 4px;
 }
 
 .list-row span {
     color: var(--muted);
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .right {
@@ -727,22 +693,13 @@ a {
 }
 
 .warning-row {
-    background:
-            rgba(
-                    247,
-                    200,
-                    115,
-                    0.08
-            );
+    background: rgba(247, 200, 115, 0.08);
 
-    border-left:
-            3px
-            solid
-            var(--warning);
+    border-left: 3px solid var(--warning);
 }
 
 .empty-state {
-    padding: 32px;
+    padding: 30px;
 
     color: var(--muted);
 
@@ -750,17 +707,16 @@ a {
 }
 
 
-/* TABELAS */
+/* =========================================
+   TABELAS
+========================================= */
 
 .table-card {
     background: var(--surface);
 
-    border:
-            1px
-            solid
-            var(--border);
+    border: 1px solid var(--border);
 
-    border-radius: 16px;
+    border-radius: 15px;
 
     overflow: hidden;
 
@@ -779,16 +735,11 @@ table {
 
 th,
 td {
-    padding:
-            16px
-            18px;
+    padding: 15px 17px;
 
     text-align: left;
 
-    border-bottom:
-            1px
-            solid
-            var(--border);
+    border-bottom: 1px solid var(--border);
 }
 
 th {
@@ -796,7 +747,7 @@ th {
 
     color: var(--muted);
 
-    font-size: 11px;
+    font-size: 10px;
 
     text-transform: uppercase;
 
@@ -804,7 +755,7 @@ th {
 }
 
 td {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 tbody tr {
@@ -832,11 +783,11 @@ td small {
 }
 
 .actions a {
-    margin-left: 12px;
+    margin-left: 11px;
 
     color: #c6cdd7;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 700;
 }
@@ -850,19 +801,18 @@ td small {
 }
 
 
-/* FORMULÁRIOS */
+/* =========================================
+   FORMULÁRIOS
+========================================= */
 
 .form-card {
     background: var(--surface);
 
-    border:
-            1px
-            solid
-            var(--border);
+    border: 1px solid var(--border);
 
-    border-radius: 16px;
+    border-radius: 15px;
 
-    padding: 28px;
+    padding: 26px;
 
     box-shadow: var(--shadow);
 }
@@ -871,10 +821,10 @@ td small {
     display: grid;
 
     grid-template-columns:
-            1fr
-            1fr;
+        1fr
+        1fr;
 
-    gap: 20px;
+    gap: 18px;
 }
 
 .field {
@@ -882,20 +832,20 @@ td small {
 
     flex-direction: column;
 
-    gap: 8px;
+    gap: 7px;
 }
 
 .field-full {
     grid-column:
-            1
-            /
-            -1;
+        1
+        /
+        -1;
 }
 
 .field label {
     color: #d6dce5;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 700;
 }
@@ -909,16 +859,11 @@ td small {
 
     color: var(--text);
 
-    border:
-            1px
-            solid
-            var(--border);
+    border: 1px solid var(--border);
 
-    border-radius: 10px;
+    border-radius: 9px;
 
-    padding:
-            12px
-            13px;
+    padding: 11px 12px;
 
     outline: none;
 
@@ -949,7 +894,7 @@ td small {
 .field small {
     color: var(--muted);
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .checkbox-field {
@@ -961,15 +906,15 @@ td small {
 
     align-items: center;
 
-    gap: 9px;
+    gap: 8px;
 
     cursor: pointer;
 }
 
 .checkbox-field input {
-    width: 16px;
+    width: 15px;
 
-    height: 16px;
+    height: 15px;
 }
 
 .form-actions {
@@ -979,52 +924,556 @@ td small {
 
     gap: 10px;
 
-    margin-top: 26px;
+    margin-top: 24px;
 }
 
 
-/* STATUS DAS PARCELAS */
+/* =========================================
+   STATUS DAS PARCELAS
+========================================= */
 
 .status {
     display: inline-block;
 
-    padding:
-            6px
-            10px;
+    padding: 5px 9px;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
-    font-size: 12px;
+    font-size: 11px;
 
     font-weight: 700;
 }
 
 .status-paid {
-    background:
-            rgba(
-                    99,
-                    210,
-                    151,
-                    0.12
-            );
+    background: rgba(99, 210, 151, 0.12);
 
     color: var(--success);
 }
 
 .status-open {
-    background:
-            rgba(
-                    247,
-                    200,
-                    115,
-                    0.12
-            );
+    background: rgba(247, 200, 115, 0.12);
 
     color: var(--warning);
 }
 
 
-/* RESPONSIVIDADE */
+/* =========================================
+   CATEGORIAS
+========================================= */
+
+.category-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: rgba(142, 162, 255, 0.12);
+
+    color: var(--accent);
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.category-info > div:last-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.category-info strong {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   FORMAS DE PAGAMENTO
+========================================= */
+
+.payment-info {
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+.payment-info > div:last-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.payment-info strong {
+    font-size: 13px;
+}
+
+.payment-info span {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.payment-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: rgba(86, 214, 169, 0.12);
+
+    color: #56d6a9;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================
+   CARTÕES
+========================================= */
+
+.credit-card {
+    min-height: 245px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171c26,
+            #10141b
+        );
+
+    border: 1px solid #2a3240;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 8px 22px
+        rgba(0, 0, 0, 0.28);
+
+    transition: 0.2s;
+}
+
+.credit-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #3a465a;
+}
+
+
+/* TOPO DO CARTÃO */
+
+.credit-card-top {
+    display: flex;
+
+    flex-direction: row !important;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.credit-card-top > div:first-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.credit-card-top span {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.credit-card-top h3 {
+    margin: 4px 0 0;
+
+    color: white;
+
+    font-size: 19px;
+}
+
+
+/* ÍCONE DO CARTÃO */
+
+.credit-card-icon {
+    width: 38px !important;
+    height: 38px !important;
+
+    min-width: 38px;
+    max-width: 38px;
+
+    min-height: 38px;
+    max-height: 38px;
+
+    display: flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: rgba(142, 162, 255, 0.12);
+
+    border: 1px solid rgba(142, 162, 255, 0.18);
+}
+
+.credit-card-icon svg {
+    width: 17px !important;
+    height: 17px !important;
+
+    min-width: 17px;
+    max-width: 17px;
+
+    min-height: 17px;
+    max-height: 17px;
+
+    display: block;
+
+    fill: var(--accent);
+}
+
+
+/* BANCO */
+
+.credit-card-bank {
+    margin-top: 26px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.credit-card-bank span {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.credit-card-bank strong {
+    color: #e9edf4;
+
+    font-size: 14px;
+}
+
+
+/* DATAS */
+
+.credit-card-dates {
+    display: grid !important;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 12px;
+
+    margin-top: 20px;
+
+    padding-top: 17px;
+
+    border-top: 1px solid var(--border);
+}
+
+.credit-card-dates > div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    padding: 11px 12px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    border: 1px solid #252c37;
+
+    border-radius: 9px;
+}
+
+.credit-card-dates span {
+    color: var(--muted);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.credit-card-dates strong {
+    color: white;
+
+    font-size: 13px;
+}
+
+
+/* AÇÕES */
+
+.credit-card-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: auto;
+
+    padding-top: 18px;
+}
+
+.credit-card-actions a {
+    padding: 7px 10px;
+
+    border-radius: 7px;
+
+    background: rgba(255, 107, 107, 0.08);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.credit-card-actions a:hover {
+    background: rgba(255, 107, 107, 0.15);
+}
+
+
+/* =========================================
+   COMPRAS FUTURAS
+========================================= */
+
+.future-card {
+    min-height: 270px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 21px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 15px;
+
+    box-shadow: var(--shadow);
+
+    transition: 0.2s;
+}
+
+.future-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #343c49;
+}
+
+.future-card.completed {
+    opacity: 0.6;
+}
+
+.future-card-header {
+    display: flex;
+
+    flex-direction: row !important;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.future-card-header h3 {
+    margin: 9px 0 0;
+
+    font-size: 17px;
+}
+
+.future-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: rgba(142, 162, 255, 0.12);
+}
+
+.future-icon svg {
+    width: 14px !important;
+    height: 14px !important;
+
+    fill: var(--accent);
+}
+
+.future-status {
+    display: inline-block;
+
+    padding: 4px 7px;
+
+    border-radius: 6px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.future-status-pending {
+    background: rgba(247, 200, 115, 0.12);
+
+    color: var(--warning);
+}
+
+.future-status-done {
+    background: rgba(99, 210, 151, 0.12);
+
+    color: var(--success);
+}
+
+.future-value {
+    margin-top: 23px;
+}
+
+.future-value span,
+.future-date span,
+.future-observation span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.future-value strong {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 22px;
+}
+
+.future-date {
+    margin-top: 17px;
+}
+
+.future-date strong {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 12px;
+}
+
+.future-observation {
+    margin-top: 17px;
+}
+
+.future-observation p {
+    margin: 5px 0 0;
+
+    color: #cbd2dc;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.future-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-top: auto;
+
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border);
+}
+
+.future-action {
+    color: var(--accent);
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.future-action:hover {
+    color: white;
+}
+
+.future-actions .danger-link {
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
 
 @media (max-width: 1000px) {
 
@@ -1059,9 +1508,9 @@ td small {
 
     .content {
         padding:
-                30px
-                20px
-                60px;
+            30px
+            20px
+            60px;
     }
 
     .cards-2,
@@ -1098,455 +1547,8 @@ td small {
         width: 100%;
     }
 
-    /* CATEGORIAS */
-
-    .category-icon {
-        width: 34px;
-        height: 34px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        flex-shrink: 0;
-
-        border-radius: 9px;
-
-        background: rgba(142, 162, 255, 0.12);
-
-        color: #8ea2ff;
-
-        font-size: 14px;
-        font-weight: 800;
-    }
-
-    .category-info {
-        display: flex !important;
-        flex-direction: row !important;
-
-        align-items: center;
-
-        gap: 12px;
-    }
-
-    .category-info > div:last-child {
-        display: flex;
-        flex-direction: column;
-
-        gap: 4px;
-    }
-
-    .category-info strong {
-        font-size: 14px;
-    }
-
-    .category-info span {
-        color: var(--muted);
-
-        font-size: 12px;
-    }
-
-    /* FORMAS DE PAGAMENTO */
-
-    .payment-info {
-        display: flex !important;
-
-        flex-direction: row !important;
-
-        align-items: center;
-
-        gap: 12px;
-    }
-
-    .payment-info > div:last-child {
-        display: flex;
-
-        flex-direction: column;
-
-        gap: 4px;
-    }
-
-    .payment-info strong {
-        font-size: 14px;
-    }
-
-    .payment-info span {
-        color: var(--muted);
-
-        font-size: 12px;
-    }
-
-    .payment-icon {
-        width: 34px;
-        height: 34px;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        flex-shrink: 0;
-
-        border-radius: 9px;
-
-        background:
-            rgba(
-                86,
-                214,
-                169,
-                0.12
-            );
-
-        color: #56d6a9;
-
-        font-size: 13px;
-
-        font-weight: 800;
-    }
-
-    /* CARTÕES */
-
-    .credit-card {
-        min-height: 230px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        padding: 22px;
-
-        border-radius: 18px;
-
-        background:
-            linear-gradient(
-                135deg,
-                #1c2230,
-                #10141c
-            );
-
-        border: 1px solid #293141;
-
-        box-shadow: var(--shadow);
-    }
-
-    .credit-card-top {
-        display: flex;
-
-        align-items: flex-start;
-
-        justify-content: space-between;
-
-        gap: 20px;
-    }
-
-    .credit-card-top span,
-    .credit-card-bank span,
-    .credit-card-dates span {
-        display: block;
-
-        color: var(--muted);
-
-        font-size: 11px;
-    }
-
-    .credit-card-top h3 {
-        margin: 5px 0 0;
-
-        font-size: 20px;
-    }
-
-    .credit-card-icon {
-        width: 34px;
-        height: 34px;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 10px;
-
-        background:
-            rgba(
-                142,
-                162,
-                255,
-                0.12
-            );
-    }
-
-    .credit-card-icon svg {
-        width: 16px;
-        height: 16px;
-
-        fill: #8ea2ff;
-    }
-
-    .credit-card-bank {
-        margin-top: 28px;
-    }
-
-    .credit-card-bank strong {
-        display: block;
-
-        margin-top: 4px;
-
-        font-size: 14px;
-    }
-
     .credit-card-dates {
-        display: grid;
-
-        grid-template-columns:
-            1fr
-            1fr;
-
-        gap: 20px;
-
-        margin-top: 24px;
-
-        padding-top: 18px;
-
-        border-top:
-            1px
-            solid
-            var(--border);
-    }
-
-    .credit-card-dates strong {
-        display: block;
-
-        margin-top: 5px;
-
-        font-size: 13px;
-    }
-
-    .credit-card-actions {
-        margin-top: 20px;
-
-        text-align: right;
-    }
-
-    .credit-card-actions a {
-        font-size: 12px;
-
-        font-weight: 700;
-    }
-
-    /* COMPRAS FUTURAS */
-
-    .future-card {
-        min-height: 270px;
-
-        display: flex;
-        flex-direction: column;
-
-        padding: 22px;
-
-        background: var(--surface);
-
-        border: 1px solid var(--border);
-
-        border-radius: 16px;
-
-        box-shadow: var(--shadow);
-
-        transition: 0.2s;
-    }
-
-    .future-card:hover {
-        transform: translateY(-2px);
-
-        border-color: #343c49;
-    }
-
-    .future-card.completed {
-        opacity: 0.6;
-    }
-
-    .future-card-header {
-        display: flex;
-
-        align-items: flex-start;
-
-        justify-content: space-between;
-
-        gap: 15px;
-    }
-
-    .future-card-header h3 {
-        margin: 10px 0 0;
-
-        font-size: 18px;
-    }
-
-    .future-icon {
-        width: 34px;
-        height: 34px;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        flex-shrink: 0;
-
-        border-radius: 9px;
-
-        background:
-            rgba(
-                142,
-                162,
-                255,
-                0.12
-            );
-    }
-
-    .future-icon svg {
-        width: 15px;
-        height: 15px;
-
-        fill: #8ea2ff;
-    }
-
-
-    /* STATUS */
-
-    .future-status {
-        display: inline-block;
-
-        padding: 5px 8px;
-
-        border-radius: 7px;
-
-        font-size: 10px;
-
-        font-weight: 700;
-
-        text-transform: uppercase;
-
-        letter-spacing: 0.5px;
-    }
-
-    .future-status-pending {
-        background:
-            rgba(
-                247,
-                200,
-                115,
-                0.12
-            );
-
-        color: var(--warning);
-    }
-
-    .future-status-done {
-        background:
-            rgba(
-                99,
-                210,
-                151,
-                0.12
-            );
-
-        color: var(--success);
-    }
-
-
-    /* VALOR */
-
-    .future-value {
-        margin-top: 25px;
-    }
-
-    .future-value span,
-    .future-date span,
-    .future-observation span {
-        display: block;
-
-        color: var(--muted);
-
-        font-size: 11px;
-    }
-
-    .future-value strong {
-        display: block;
-
-        margin-top: 4px;
-
-        font-size: 24px;
-    }
-
-
-    /* DATA */
-
-    .future-date {
-        margin-top: 18px;
-    }
-
-    .future-date strong {
-        display: block;
-
-        margin-top: 4px;
-
-        font-size: 13px;
-    }
-
-
-    /* OBSERVAÇÃO */
-
-    .future-observation {
-        margin-top: 18px;
-    }
-
-    .future-observation p {
-        margin: 5px 0 0;
-
-        color: #cbd2dc;
-
-        font-size: 13px;
-
-        line-height: 1.5;
-    }
-
-
-    /* AÇÕES */
-
-    .future-actions {
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        gap: 10px;
-
-        margin-top: auto;
-
-        padding-top: 20px;
-
-        border-top:
-            1px
-            solid
-            var(--border);
-    }
-
-    .future-action {
-        color: #8ea2ff;
-
-        font-size: 12px;
-
-        font-weight: 700;
-    }
-
-    .future-action:hover {
-        color: white;
-    }
-
-    .future-actions .danger-link {
-        font-size: 12px;
-
-        font-weight: 700;
+        grid-template-columns: 1fr;
     }
 
 }
