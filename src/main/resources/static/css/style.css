@@ -23,7 +23,7 @@
 
 
 /* =========================================
-   CONFIGURAÇÕES GERAIS
+   GERAL
 ========================================= */
 
 * {
@@ -116,7 +116,6 @@ a {
     color: var(--primary-text);
 
     font-size: 17px;
-
     font-weight: 900;
 }
 
@@ -143,7 +142,6 @@ a {
 
 .sidebar-nav {
     display: flex;
-
     flex-direction: column;
 
     gap: 5px;
@@ -153,7 +151,6 @@ a {
     min-height: 40px;
 
     display: flex !important;
-
     flex-direction: row !important;
 
     align-items: center;
@@ -174,7 +171,7 @@ a {
 }
 
 
-/* ÍCONES DO MENU */
+/* ÍCONES LATERAIS */
 
 .nav-item svg {
     width: 14px !important;
@@ -212,7 +209,7 @@ a {
 }
 
 
-/* RODAPÉ SIDEBAR */
+/* RODAPÉ */
 
 .sidebar-footer {
     display: flex;
@@ -374,7 +371,7 @@ a {
 
 
 /* =========================================
-   CARDS GENÉRICOS
+   CARDS
 ========================================= */
 
 .cards {
@@ -634,6 +631,252 @@ a {
 
 
 /* =========================================
+   FATURAS DO DASHBOARD
+========================================= */
+
+.invoice-card {
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171c25,
+            #10141a
+        );
+
+    border: 1px solid #28313e;
+
+    border-radius: 16px;
+
+    box-shadow: var(--shadow);
+}
+
+.invoice-warning {
+    border-color: rgba(247, 200, 115, 0.45);
+}
+
+
+/* TOPO */
+
+.invoice-header {
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: flex-start !important;
+
+    justify-content: space-between !important;
+
+    gap: 15px;
+}
+
+.invoice-header > div:first-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.invoice-label {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.invoice-header h3 {
+    margin: 5px 0 0;
+
+    font-size: 18px;
+}
+
+
+/* ÍCONE DA FATURA */
+
+.invoice-icon {
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    max-width: 32px !important;
+
+    min-height: 32px !important;
+    max-height: 32px !important;
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex-shrink: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background: rgba(142, 162, 255, 0.12);
+
+    border: 1px solid rgba(142, 162, 255, 0.18);
+}
+
+.invoice-icon svg {
+    width: 14px !important;
+    height: 14px !important;
+
+    min-width: 14px !important;
+    max-width: 14px !important;
+
+    min-height: 14px !important;
+    max-height: 14px !important;
+
+    display: block !important;
+
+    position: static !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    fill: var(--accent) !important;
+}
+
+.invoice-icon svg path {
+    fill: var(--accent) !important;
+}
+
+
+/* VALOR */
+
+.invoice-value {
+    margin-top: 22px;
+}
+
+.invoice-value span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.invoice-value strong {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 24px;
+}
+
+
+/* DATAS */
+
+.invoice-dates {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.invoice-date-box {
+    padding: 11px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.025
+        );
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+}
+
+.invoice-date-box span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+}
+
+.invoice-date-box strong {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 12px;
+}
+
+.invoice-date-box small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* ALERTAS */
+
+.invoice-alert {
+    margin-top: 12px;
+
+    padding: 9px 10px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+}
+
+.invoice-alert.closing {
+    background:
+        rgba(
+            247,
+            200,
+            115,
+            0.10
+        );
+
+    color: var(--warning);
+}
+
+.invoice-alert.due {
+    background:
+        rgba(
+            255,
+            107,
+            107,
+            0.10
+        );
+
+    color: var(--danger);
+}
+
+
+/* =========================================
    LISTAS
 ========================================= */
 
@@ -708,7 +951,7 @@ a {
 
 
 /* =========================================
-   TABELAS
+   TABELA
 ========================================= */
 
 .table-card {
@@ -798,6 +1041,150 @@ td small {
 
 .danger-link {
     color: var(--danger) !important;
+}
+
+
+/* =========================================
+   PAGAMENTO NA TABELA
+========================================= */
+
+.payment-table {
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.payment-table > div:last-child {
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    gap: 2px;
+}
+
+.payment-table strong {
+    color: #e7ebf1;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.payment-table small {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+/* ÍCONE PAGAMENTO */
+
+.payment-mini-icon {
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    max-width: 28px !important;
+
+    min-height: 28px !important;
+    max-height: 28px !important;
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex-shrink: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
+    background: rgba(86, 214, 169, 0.12);
+
+    color: #56d6a9;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+/* CARTÃO NA TABELA */
+
+.payment-mini-icon.credit {
+    background: rgba(142, 162, 255, 0.12);
+
+    border: 1px solid rgba(142, 162, 255, 0.15);
+
+    color: var(--accent);
+}
+
+.payment-mini-icon.credit svg {
+    width: 13px !important;
+    height: 13px !important;
+
+    min-width: 13px !important;
+    max-width: 13px !important;
+
+    min-height: 13px !important;
+    max-height: 13px !important;
+
+    display: block !important;
+
+    position: static !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    fill: var(--accent) !important;
+}
+
+
+/* =========================================
+   BADGE DE PARCELAS
+========================================= */
+
+.installment-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 38px;
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    background: rgba(142, 162, 255, 0.12);
+
+    color: var(--accent);
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.installment-badge.single {
+    background: rgba(99, 210, 151, 0.10);
+
+    color: var(--success);
 }
 
 
@@ -929,7 +1316,7 @@ td small {
 
 
 /* =========================================
-   STATUS DAS PARCELAS
+   STATUS PARCELAS
 ========================================= */
 
 .status {
@@ -997,7 +1384,7 @@ td small {
 
 
 /* =========================================
-   FORMAS DE PAGAMENTO
+   PAGAMENTOS
 ========================================= */
 
 .payment-info {
@@ -1088,9 +1475,6 @@ td small {
     border-color: #3a465a;
 }
 
-
-/* TOPO DO CARTÃO */
-
 .credit-card-top {
     display: flex;
 
@@ -1130,7 +1514,7 @@ td small {
 }
 
 
-/* ÍCONE DO CARTÃO */
+/* ÍCONE CARTÃO */
 
 .credit-card-icon {
     width: 38px !important;
@@ -1201,7 +1585,7 @@ td small {
 }
 
 
-/* DATAS */
+/* DATAS CARTÃO */
 
 .credit-card-dates {
     display: grid !important;
@@ -1252,7 +1636,7 @@ td small {
 }
 
 
-/* AÇÕES */
+/* AÇÕES CARTÃO */
 
 .credit-card-actions {
     display: flex;
@@ -1358,6 +1742,9 @@ td small {
     fill: var(--accent);
 }
 
+
+/* STATUS FUTURO */
+
 .future-status {
     display: inline-block;
 
@@ -1385,6 +1772,9 @@ td small {
 
     color: var(--success);
 }
+
+
+/* VALOR */
 
 .future-value {
     margin-top: 23px;
@@ -1434,6 +1824,9 @@ td small {
     line-height: 1.5;
 }
 
+
+/* AÇÕES FUTURO */
+
 .future-actions {
     display: flex;
 
@@ -1472,7 +1865,7 @@ td small {
 
 
 /* =========================================
-   RESPONSIVIDADE
+   RESPONSIVO
 ========================================= */
 
 @media (max-width: 1000px) {
@@ -1547,7 +1940,8 @@ td small {
         width: 100%;
     }
 
-    .credit-card-dates {
+    .credit-card-dates,
+    .invoice-dates {
         grid-template-columns: 1fr;
     }
 

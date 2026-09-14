@@ -48,6 +48,10 @@ public class GastoService {
 
     public void salvar(Gasto gasto) {
 
+        if (gasto.getCartaoId() != null) {
+
+            gasto.setFormaPagamentoId(null);
+        }
         /*
          * Se por algum motivo não vier data,
          * usamos a data atual.

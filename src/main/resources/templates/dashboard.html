@@ -17,7 +17,6 @@
     <link rel="stylesheet"
           th:href="@{/css/style.css}">
 
-    <!-- Biblioteca do gráfico -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -56,8 +55,9 @@
             </div>
 
 
-            <a class="btn btn-primary"
-               th:href="@{/gastos/novo}">
+            <a
+                    class="btn btn-primary"
+                    th:href="@{/gastos/novo}">
 
                 + Novo gasto
 
@@ -113,7 +113,7 @@
 
 
                 <small>
-                    Próximos 40 dias
+                    Cartões com vencimentos próximos
                 </small>
 
             </article>
@@ -122,11 +122,11 @@
         </section>
 
 
-        <!-- FATURAS PRÓXIMAS -->
+        <!-- FATURAS -->
 
         <section
-                th:if="${!#lists.isEmpty(faturas)}"
-                class="section">
+                class="section"
+                th:if="${!#lists.isEmpty(faturas)}">
 
 
             <div class="section-title">
@@ -134,7 +134,7 @@
                 <div>
 
                     <h2>
-                        Próximas faturas
+                        Faturas dos cartões
                     </h2>
 
                 </div>
@@ -142,45 +142,61 @@
             </div>
 
 
-            <div class="list-card">
+            <div class="cards cards-2">
 
 
-                <div
+                <article
                         th:each="fatura : ${faturas}"
-                        class="list-row"
-                        th:classappend="${fatura.proxima}
-                        ? ' warning-row'
+                        class="invoice-card"
+                        th:classappend="${fatura.proxima || fatura.pertoDeFechar}
+                        ? ' invoice-warning'
                         : ''">
 
 
-                    <!-- CARTÃO + VENCIMENTO -->
+                    <!-- TOPO -->
 
-                    <div>
-
-                        <strong
-                                th:text="${fatura.cartaoNome}">
-
-                            Cartão
-
-                        </strong>
+                    <div class="invoice-header">
 
 
-                        <span
-                                th:text="${#temporals.format(
-                                fatura.vencimento,
-                                'dd/MM/yyyy'
-                                )}">
+                        <div>
 
-                            10/09/2026
+                            <span class="invoice-label">
+                                Cartão de crédito
+                            </span>
 
-                        </span>
+
+                            <h3
+                                    th:text="${fatura.cartaoNome}">
+
+                                Nubank
+
+                            </h3>
+
+                        </div>
+
+
+                        <div class="invoice-icon">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                        d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+
+                            </svg>
+
+                        </div>
+
 
                     </div>
 
 
-                    <!-- VALOR + AVISO -->
+                    <!-- VALOR DA FATURA -->
 
-                    <div class="right">
+                    <div class="invoice-value">
+
+                        <span>
+                            Valor atual
+                        </span>
 
 
                         <strong
@@ -192,18 +208,125 @@
 
                         </strong>
 
+                    </div>
 
-                        <span
-                                th:if="${fatura.proxima}"
-                                th:text="'Vence em '
-                                + ${fatura.diasParaVencimento}
-                                + ' dia(s)'">
 
-                        </span>
+                    <!-- DATAS -->
+
+                    <div class="invoice-dates">
+
+
+                        <!-- FECHAMENTO -->
+
+                        <div class="invoice-date-box">
+
+                            <span>
+                                Fechamento
+                            </span>
+
+
+                            <strong
+                                    th:text="${#temporals.format(
+                                    fatura.fechamento,
+                                    'dd/MM/yyyy'
+                                    )}">
+
+                                20/09/2026
+
+                            </strong>
+
+
+                            <small
+                                    th:if="${fatura.diasParaFechamento >= 0}"
+                                    th:text="${fatura.diasParaFechamento}
+                                    + ' dia(s) para fechar'">
+
+                            </small>
+
+
+                            <small
+                                    th:if="${fatura.diasParaFechamento < 0}">
+                                Fatura fechada
+                            </small>
+
+                        </div>
+
+
+                        <!-- VENCIMENTO -->
+
+                        <div class="invoice-date-box">
+
+                            <span>
+                                Vencimento
+                            </span>
+
+
+                            <strong
+                                    th:text="${#temporals.format(
+                                    fatura.vencimento,
+                                    'dd/MM/yyyy'
+                                    )}">
+
+                                27/09/2026
+
+                            </strong>
+
+
+                            <small
+                                    th:if="${fatura.diasParaVencimento >= 0}"
+                                    th:text="${fatura.diasParaVencimento}
+                                    + ' dia(s) para vencer'">
+
+                            </small>
+
+                        </div>
 
 
                     </div>
 
+
+                    <!-- ALERTAS -->
+
+                    <div
+                            class="invoice-alert closing"
+                            th:if="${fatura.pertoDeFechar}">
+
+                        Atenção: esta fatura está próxima do fechamento.
+
+                    </div>
+
+
+                    <div
+                            class="invoice-alert due"
+                            th:if="${fatura.proxima}">
+
+                        Atenção: esta fatura está próxima do vencimento.
+
+                    </div>
+
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- SEM FATURAS -->
+
+        <section
+                class="section"
+                th:if="${#lists.isEmpty(faturas)}">
+
+
+            <div class="dashboard-panel">
+
+
+                <div class="empty-state">
+
+                    Nenhuma fatura prevista nos próximos dias.
 
                 </div>
 
@@ -231,7 +354,7 @@
                     </h2>
 
                     <p>
-                        Distribuição dos seus gastos neste mês
+                        Distribuição dos gastos deste mês
                     </p>
 
                 </div>
@@ -250,10 +373,9 @@
 
                 <!-- COM GASTOS -->
 
-                <div th:if="${!#maps.isEmpty(gastosCategoria)}">
+                <div
+                        th:if="${!#maps.isEmpty(gastosCategoria)}">
 
-
-                    <!-- GRÁFICO -->
 
                     <div class="chart-container">
 
@@ -262,7 +384,7 @@
                         </canvas>
 
 
-                        <!-- CENTRO DO GRÁFICO -->
+                        <!-- CENTRO -->
 
                         <div class="chart-center">
 
@@ -303,7 +425,8 @@
                                 </span>
 
 
-                                <span th:text="${item.key}">
+                                <span
+                                        th:text="${item.key}">
 
                                     Categoria
 
@@ -368,8 +491,6 @@
                 <div class="list-card">
 
 
-                    <!-- SEM GASTOS -->
-
                     <div
                             th:if="${#lists.isEmpty(ultimosGastos)}"
                             class="empty-state">
@@ -379,15 +500,12 @@
                     </div>
 
 
-                    <!-- LISTA DE GASTOS -->
-
                     <div
                             th:each="gasto : ${ultimosGastos}"
                             class="list-row">
 
 
                         <div>
-
 
                             <strong
                                     th:text="${gasto.descricao}">
@@ -406,7 +524,6 @@
                                 14/09/2026
 
                             </span>
-
 
                         </div>
 
@@ -439,38 +556,13 @@
 </div>
 
 
-<!-- JAVASCRIPT DO GRÁFICO -->
+<!-- GRÁFICO -->
 
 <script th:inline="javascript">
-
-
-    /*
-     * Esse objeto vem diretamente do:
-     *
-     * DashboardController
-     *
-     * gastosCategoria
-     *
-     * Exemplo:
-     *
-     * {
-     *   "Alimentação": 500,
-     *   "Lazer": 200,
-     *   "Transporte": 300
-     * }
-     */
 
     const dadosCategorias =
         /*[[${gastosCategoria}]]*/ {};
 
-
-    /*
-     * Pegamos somente os nomes:
-     *
-     * Alimentação
-     * Transporte
-     * Lazer
-     */
 
     const categorias =
         Object.keys(
@@ -478,24 +570,11 @@
         );
 
 
-    /*
-     * Pegamos somente os valores:
-     *
-     * 500
-     * 300
-     * 200
-     */
-
     const valores =
         Object.values(
             dadosCategorias
         );
 
-
-    /*
-     * Cada categoria vai receber
-     * uma cor do array abaixo.
-     */
 
     const cores = [
 
@@ -528,11 +607,6 @@
         );
 
 
-    /*
-     * Só cria o gráfico se houver
-     * categorias cadastradas.
-     */
-
     if (
         canvas
         && categorias.length > 0
@@ -545,16 +619,10 @@
 
             {
 
-                /*
-                 * doughnut =
-                 * gráfico de rosca
-                 */
-
                 type: "doughnut",
 
 
                 data: {
-
 
                     labels:
                         categorias,
@@ -564,38 +632,14 @@
 
                         {
 
-                            /*
-                             * Valores usados para
-                             * calcular o tamanho
-                             * de cada pedaço.
-                             */
-
                             data:
                                 valores,
-
-
-                            /*
-                             * Cor de cada categoria.
-                             */
 
                             backgroundColor:
                                 cores,
 
-
-                            /*
-                             * Remove bordas
-                             * entre os pedaços.
-                             */
-
                             borderWidth:
                                 0,
-
-
-                            /*
-                             * Ao passar o mouse,
-                             * o pedaço se destaca
-                             * um pouco.
-                             */
 
                             hoverOffset:
                                 7
@@ -609,22 +653,11 @@
 
                 options: {
 
-
                     responsive:
                         true,
 
-
                     maintainAspectRatio:
                         false,
-
-
-                    /*
-                     * Define o tamanho do espaço
-                     * central do gráfico.
-                     *
-                     * Quanto maior,
-                     * mais fina fica a rosca.
-                     */
 
                     cutout:
                         "72%",
@@ -633,13 +666,6 @@
                     plugins: {
 
 
-                        /*
-                         * Não usamos a legenda
-                         * padrão do Chart.js
-                         * porque criamos nossa
-                         * própria legenda abaixo.
-                         */
-
                         legend: {
 
                             display:
@@ -647,12 +673,6 @@
 
                         },
 
-
-                        /*
-                         * Informações exibidas
-                         * quando o mouse fica
-                         * sobre alguma categoria.
-                         */
 
                         tooltip: {
 
@@ -688,11 +708,6 @@
                                             );
 
 
-                                        /*
-                                         * Calcula a porcentagem
-                                         * daquela categoria.
-                                         */
-
                                         const percentual =
                                             total > 0
 
@@ -704,10 +719,6 @@
 
                                                 : 0;
 
-
-                                        /*
-                                         * Formata para Real.
-                                         */
 
                                         const valorFormatado =
                                             valor.toLocaleString(
@@ -759,8 +770,7 @@
 
 
         /*
-         * Define as mesmas cores
-         * na legenda abaixo do gráfico.
+         * Cores da legenda
          */
 
         const marcadores =
@@ -776,7 +786,6 @@
                 indice
             ) {
 
-
                 marcador.style.backgroundColor =
 
                     cores[
@@ -789,7 +798,6 @@
         );
 
     }
-
 
 </script>
 

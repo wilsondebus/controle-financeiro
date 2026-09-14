@@ -1,56 +1,90 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1">
 
-    <title>Novo gasto | Finance</title>
+    <title>
+        Novo gasto | Finance
+    </title>
 
     <link rel="stylesheet"
           th:href="@{/css/style.css}">
+
 </head>
 
 <body>
 
 <div class="layout">
 
-    <div th:replace="~{fragments/menu :: menu}"></div>
+    <!-- MENU -->
+
+    <div th:replace="~{fragments/menu :: menu}">
+    </div>
+
+
+    <!-- CONTEÚDO -->
 
     <main class="content narrow">
+
+
+        <!-- CABEÇALHO -->
 
         <div class="page-header">
 
             <div>
+
                 <p class="eyebrow">
                     Movimentações
                 </p>
 
-                <h1 th:text="${gasto.id == null ? 'Novo gasto' : 'Editar gasto'}">
+                <h1
+                        th:text="${gasto.id == null
+                        ? 'Novo gasto'
+                        : 'Editar gasto'}">
+
                     Novo gasto
+
                 </h1>
+
             </div>
 
-            <a class="btn btn-secondary"
-               th:href="@{/gastos}">
+
+            <a
+                    class="btn btn-secondary"
+                    th:href="@{/gastos}">
+
                 Voltar
+
             </a>
 
         </div>
 
 
-        <form class="form-card"
-              th:action="@{/gastos/salvar}"
-              th:object="${gasto}"
-              method="post">
+        <!-- FORMULÁRIO -->
 
-            <input type="hidden"
-                   th:field="*{id}">
+        <form
+                class="form-card"
+                th:action="@{/gastos/salvar}"
+                th:object="${gasto}"
+                method="post">
+
+
+            <!-- ID -->
+
+            <input
+                    type="hidden"
+                    th:field="*{id}">
 
 
             <div class="form-grid">
+
 
                 <!-- DESCRIÇÃO -->
 
@@ -60,11 +94,12 @@
                         Descrição
                     </label>
 
-                    <input id="descricao"
-                           type="text"
-                           th:field="*{descricao}"
-                           placeholder="Ex.: Mercado, Uber, monitor..."
-                           required>
+                    <input
+                            id="descricao"
+                            type="text"
+                            th:field="*{descricao}"
+                            placeholder="Ex.: Mercado, combustível, notebook..."
+                            required>
 
                 </div>
 
@@ -77,12 +112,14 @@
                         Valor
                     </label>
 
-                    <input id="valor"
-                           type="number"
-                           th:field="*{valor}"
-                           min="0"
-                           step="0.01"
-                           required>
+                    <input
+                            id="valor"
+                            type="number"
+                            th:field="*{valor}"
+                            min="0"
+                            step="0.01"
+                            placeholder="Ex.: 150.00"
+                            required>
 
                 </div>
 
@@ -92,37 +129,43 @@
                 <div class="field">
 
                     <label for="data">
-                        Data
+                        Data da compra
                     </label>
 
-                    <input id="data"
-                           type="date"
-                           th:field="*{data}"
-                           required>
+                    <input
+                            id="data"
+                            type="date"
+                            th:field="*{data}"
+                            required>
 
                 </div>
 
 
                 <!-- CATEGORIA -->
 
-                <div class="field">
+                <div class="field field-full">
 
                     <label for="categoria">
                         Categoria
                     </label>
 
-                    <select id="categoria"
+                    <select
+                            id="categoria"
                             th:field="*{categoriaId}"
                             required>
 
+
                         <option value="">
-                            Selecione
+                            Selecione uma categoria
                         </option>
 
-                        <option th:each="categoria : ${categorias}"
+
+                        <option
+                                th:each="categoria : ${categorias}"
                                 th:value="${categoria.id}"
                                 th:text="${categoria.nome}">
                         </option>
+
 
                     </select>
 
@@ -131,58 +174,79 @@
 
                 <!-- FORMA DE PAGAMENTO -->
 
-                <div class="field">
+                <div class="field field-full">
 
-                    <label for="formaPagamento">
+                    <label for="seletorPagamento">
                         Forma de pagamento
                     </label>
 
-                    <select id="formaPagamento"
-                            th:field="*{formaPagamentoId}"
+
+                    <select
+                            id="seletorPagamento"
                             required>
+
 
                         <option value="">
                             Selecione
                         </option>
 
-                        <option th:each="forma : ${formasPagamento}"
-                                th:value="${forma.id}"
-                                th:text="${forma.nome}"
-                                th:attr="data-tipo=${forma.tipo}">
-                        </option>
+
+                        <!-- FORMAS NORMAIS -->
+
+                        <optgroup label="Outras formas">
+
+
+                            <option
+                                    th:each="forma : ${formasPagamento}"
+                                    th:if="${forma.tipo.name() != 'CREDITO'}"
+                                    th:value="'FORMA_' + ${forma.id}"
+                                    th:text="${forma.nome}">
+
+                            </option>
+
+
+                        </optgroup>
+
+
+                        <!-- CARTÕES -->
+
+                        <optgroup
+                                label="Cartões de crédito"
+                                th:if="${!#lists.isEmpty(cartoes)}">
+
+
+                            <option
+                                    th:each="cartao : ${cartoes}"
+                                    th:value="'CARTAO_' + ${cartao.id}"
+                                    th:text="${cartao.nome + ' - ' + cartao.banco}">
+
+                            </option>
+
+
+                        </optgroup>
+
 
                     </select>
 
-                </div>
-
-
-                <!-- CARTÃO -->
-
-                <div class="field field-full"
-                     id="campoCartao">
-
-                    <label for="cartao">
-                        Cartão
-                    </label>
-
-                    <select id="cartao"
-                            th:field="*{cartaoId}">
-
-                        <option value="">
-                            Selecione o cartão
-                        </option>
-
-                        <option th:each="cartao : ${cartoes}"
-                                th:value="${cartao.id}"
-                                th:text="|${cartao.nome} - ${cartao.banco}|">
-                        </option>
-
-                    </select>
 
                     <small>
-                        O cartão é usado para calcular o fechamento
-                        e o vencimento da fatura.
+                        Escolha uma forma comum ou diretamente um dos cartões cadastrados.
                     </small>
+
+
+                    <!-- CAMPOS ESCONDIDOS -->
+
+                    <input
+                            type="hidden"
+                            id="formaPagamentoId"
+                            th:field="*{formaPagamentoId}">
+
+
+                    <input
+                            type="hidden"
+                            id="cartaoId"
+                            th:field="*{cartaoId}">
+
 
                 </div>
 
@@ -193,9 +257,10 @@
 
                     <label>
 
-                        <input id="parcelado"
-                               type="checkbox"
-                               th:field="*{parcelado}">
+                        <input
+                                id="parcelado"
+                                type="checkbox"
+                                th:field="*{parcelado}">
 
                         Compra parcelada
 
@@ -206,18 +271,20 @@
 
                 <!-- QUANTIDADE DE PARCELAS -->
 
-                <div class="field"
-                     id="campoParcelas">
+                <div
+                        class="field"
+                        id="campoParcelas">
 
                     <label for="quantidadeParcelas">
                         Quantidade de parcelas
                     </label>
 
-                    <input id="quantidadeParcelas"
-                           type="number"
-                           th:field="*{quantidadeParcelas}"
-                           min="1"
-                           max="120">
+                    <input
+                            id="quantidadeParcelas"
+                            type="number"
+                            th:field="*{quantidadeParcelas}"
+                            min="1"
+                            max="120">
 
                 </div>
 
@@ -228,9 +295,10 @@
 
                     <label>
 
-                        <input id="possuiJuros"
-                               type="checkbox"
-                               th:field="*{possuiJuros}">
+                        <input
+                                id="possuiJuros"
+                                type="checkbox"
+                                th:field="*{possuiJuros}">
 
                         Possui juros
 
@@ -241,18 +309,21 @@
 
                 <!-- VALOR COM JUROS -->
 
-                <div class="field"
-                     id="campoJuros">
+                <div
+                        class="field"
+                        id="campoJuros">
 
                     <label for="valorTotalComJuros">
                         Valor total com juros
                     </label>
 
-                    <input id="valorTotalComJuros"
-                           type="number"
-                           th:field="*{valorTotalComJuros}"
-                           min="0"
-                           step="0.01">
+                    <input
+                            id="valorTotalComJuros"
+                            type="number"
+                            th:field="*{valorTotalComJuros}"
+                            min="0"
+                            step="0.01"
+                            placeholder="Ex.: 1200.00">
 
                 </div>
 
@@ -265,31 +336,44 @@
                         Observação
                     </label>
 
-                    <textarea id="observacao"
-                              th:field="*{observacao}"
-                              rows="4"
-                              placeholder="Opcional"></textarea>
+                    <textarea
+                            id="observacao"
+                            th:field="*{observacao}"
+                            rows="4"
+                            placeholder="Opcional"></textarea>
 
                 </div>
+
 
             </div>
 
 
+            <!-- AÇÕES -->
+
             <div class="form-actions">
 
-                <a class="btn btn-secondary"
-                   th:href="@{/gastos}">
+                <a
+                        class="btn btn-secondary"
+                        th:href="@{/gastos}">
+
                     Cancelar
+
                 </a>
 
-                <button class="btn btn-primary"
+
+                <button
+                        class="btn btn-primary"
                         type="submit">
+
                     Salvar gasto
+
                 </button>
 
             </div>
 
+
         </form>
+
 
     </main>
 
@@ -298,86 +382,151 @@
 
 <script>
 
-    const formaPagamento =
-        document.getElementById("formaPagamento");
+    const seletorPagamento =
+        document.getElementById(
+            "seletorPagamento"
+        );
 
-    const campoCartao =
-        document.getElementById("campoCartao");
+
+    const formaPagamentoId =
+        document.getElementById(
+            "formaPagamentoId"
+        );
+
+
+    const cartaoId =
+        document.getElementById(
+            "cartaoId"
+        );
+
 
     const parcelado =
-        document.getElementById("parcelado");
+        document.getElementById(
+            "parcelado"
+        );
+
 
     const campoParcelas =
-        document.getElementById("campoParcelas");
+        document.getElementById(
+            "campoParcelas"
+        );
+
 
     const possuiJuros =
-        document.getElementById("possuiJuros");
+        document.getElementById(
+            "possuiJuros"
+        );
+
 
     const campoJuros =
-        document.getElementById("campoJuros");
+        document.getElementById(
+            "campoJuros"
+        );
 
 
-    function atualizarCampoCartao() {
+    /*
+     * Atualiza os campos escondidos
+     * conforme a opção escolhida.
+     */
 
-        const opcao =
-            formaPagamento.options[
-                formaPagamento.selectedIndex
-            ];
+    function atualizarPagamento() {
 
-        const tipo =
-            opcao
-                ? opcao.getAttribute("data-tipo")
-                : null;
+        const valor =
+            seletorPagamento.value;
 
-        if (tipo === "CREDITO") {
 
-            campoCartao.style.display = "flex";
+        formaPagamentoId.value = "";
 
-        } else {
+        cartaoId.value = "";
 
-            campoCartao.style.display = "none";
 
+        /*
+         * Forma comum
+         */
+
+        if (
+            valor.startsWith("FORMA_")
+        ) {
+
+            formaPagamentoId.value =
+                valor.replace(
+                    "FORMA_",
+                    ""
+                );
         }
+
+
+        /*
+         * Cartão
+         */
+
+        if (
+            valor.startsWith("CARTAO_")
+        ) {
+
+            cartaoId.value =
+                valor.replace(
+                    "CARTAO_",
+                    ""
+                );
+        }
+
     }
 
+
+    /*
+     * Exibe ou esconde
+     * quantidade de parcelas.
+     */
 
     function atualizarCampoParcelas() {
 
-        if (parcelado.checked) {
+        campoParcelas.style.display =
+            parcelado.checked
+                ? "flex"
+                : "none";
 
-            campoParcelas.style.display = "flex";
-
-        } else {
-
-            campoParcelas.style.display = "none";
-
-        }
     }
 
+
+    /*
+     * Exibe ou esconde
+     * valor total com juros.
+     */
 
     function atualizarCampoJuros() {
 
-        if (possuiJuros.checked) {
+        campoJuros.style.display =
+            possuiJuros.checked
+                ? "flex"
+                : "none";
 
-            campoJuros.style.display = "flex";
-
-        } else {
-
-            campoJuros.style.display = "none";
-
-        }
     }
 
 
-    formaPagamento.addEventListener(
+    /*
+     * Quando alterar pagamento.
+     */
+
+    seletorPagamento.addEventListener(
         "change",
-        atualizarCampoCartao
+        atualizarPagamento
     );
+
+
+    /*
+     * Quando alterar parcelamento.
+     */
 
     parcelado.addEventListener(
         "change",
         atualizarCampoParcelas
     );
+
+
+    /*
+     * Quando alterar juros.
+     */
 
     possuiJuros.addEventListener(
         "change",
@@ -385,11 +534,55 @@
     );
 
 
-    atualizarCampoCartao();
+    /*
+     * Estado inicial da tela.
+     */
+
     atualizarCampoParcelas();
+
     atualizarCampoJuros();
+
+
+    /*
+     * Quando estiver editando um gasto,
+     * tenta selecionar automaticamente
+     * o pagamento já salvo.
+     */
+
+    const valorFormaAtual =
+        formaPagamentoId.value;
+
+
+    const valorCartaoAtual =
+        cartaoId.value;
+
+
+    if (
+        valorCartaoAtual
+        && valorCartaoAtual !== ""
+    ) {
+
+        seletorPagamento.value =
+            "CARTAO_"
+            + valorCartaoAtual;
+
+    }
+
+    else if (
+        valorFormaAtual
+        && valorFormaAtual !== ""
+    ) {
+
+        seletorPagamento.value =
+            "FORMA_"
+            + valorFormaAtual;
+
+    }
+
 
 </script>
 
+
 </body>
+
 </html>

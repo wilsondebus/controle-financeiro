@@ -15,20 +15,28 @@
   </title>
 
   <link rel="stylesheet"
-        href="/css/style.css">
+        th:href="@{/css/style.css}">
 
 </head>
 
 <body>
 
+
 <div class="layout">
 
-  <div th:replace=
-               "~{fragments/menu :: menu}">
+
+  <!-- MENU LATERAL -->
+
+  <div th:replace="~{fragments/menu :: menu}">
   </div>
 
 
+  <!-- CONTEÚDO PRINCIPAL -->
+
   <main class="content">
+
+
+    <!-- CABEÇALHO -->
 
     <div class="page-header">
 
@@ -47,7 +55,7 @@
 
       <a
               class="btn btn-primary"
-              href="/gastos/novo">
+              th:href="@{/gastos/novo}">
 
         + Novo gasto
 
@@ -56,7 +64,12 @@
     </div>
 
 
+    <!-- LISTA DE GASTOS -->
+
     <div class="table-card">
+
+
+      <!-- CASO NÃO TENHA NENHUM GASTO -->
 
       <div
               th:if="${#lists.isEmpty(gastos)}"
@@ -67,12 +80,17 @@
       </div>
 
 
+      <!-- TABELA -->
+
       <div
               class="table-responsive"
               th:if="${!#lists.isEmpty(gastos)}">
 
 
         <table>
+
+
+          <!-- CABEÇALHO DA TABELA -->
 
           <thead>
 
@@ -99,6 +117,10 @@
             </th>
 
             <th>
+              Parcelas
+            </th>
+
+            <th>
             </th>
 
           </tr>
@@ -106,138 +128,281 @@
           </thead>
 
 
+          <!-- CORPO -->
+
           <tbody>
 
 
           <tr th:each="gasto : ${gastos}">
+
+
+            <!-- DESCRIÇÃO -->
 
             <td>
 
               <strong
                       th:text="${gasto.descricao}">
 
-                Descrição
+                Mercado
 
               </strong>
 
 
               <small
-                      th:if="${gasto.parcelado}"
-                      th:text=
-                              "${gasto.quantidadeParcelas}
-                                            + ' parcelas'">
+                      th:if="${gasto.observacao != null
+                                    && !gasto.observacao.isBlank()}"
+                      th:text="${gasto.observacao}">
+
+                Observação
 
               </small>
 
             </td>
 
 
+            <!-- DATA -->
+
             <td
-                    th:text=
-                            "${#temporals.format(
-                                        gasto.data,
-                                        'dd/MM/yyyy'
-                                        )}">
+                    th:text="${#temporals.format(
+                                gasto.data,
+                                'dd/MM/yyyy'
+                                )}">
+
+              14/09/2026
 
             </td>
 
 
-            <td
-                    th:text=
-                            "${categoriaService.nomePorId(
-                                        gasto.categoriaId
-                                        )}">
-
-            </td>
-
+            <!-- CATEGORIA -->
 
             <td>
 
                             <span
-                                    th:text=
-                                            "${formaPagamentoService.nomePorId(
-                                            gasto.formaPagamentoId
-                                            )}">
+                                    th:text="${categoriaService.nomePorId(
+                                    gasto.categoriaId
+                                    )}">
+
+                                Alimentação
 
                             </span>
 
+            </td>
 
-              <small
-                      th:if="${gasto.cartaoId != null}"
-                      th:text=
-                              "${cartaoService.nomePorId(
+
+            <!-- FORMA DE PAGAMENTO -->
+
+            <td>
+
+
+              <!-- PIX / DINHEIRO / DÉBITO / OUTROS -->
+
+              <div
+                      class="payment-table"
+                      th:if="${gasto.cartaoId == null}">
+
+
+                <div class="payment-mini-icon">
+
+                  $
+
+                </div>
+
+
+                <div>
+
+                  <strong
+                          th:text="${formaPagamentoService.nomePorId(
+                                            gasto.formaPagamentoId
+                                            )}">
+
+                    PIX
+
+                  </strong>
+
+
+                  <small>
+                    Pagamento direto
+                  </small>
+
+                </div>
+
+
+              </div>
+
+
+              <!-- CARTÃO DE CRÉDITO -->
+
+              <div
+                      class="payment-table"
+                      th:if="${gasto.cartaoId != null}">
+
+
+                <div class="payment-mini-icon credit">
+
+                  <svg viewBox="0 0 24 24">
+
+                    <path
+                            d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+
+                  </svg>
+
+                </div>
+
+
+                <div>
+
+                  <strong
+                          th:text="${cartaoService.nomePorId(
                                             gasto.cartaoId
                                             )}">
+
+                    Nubank
+
+                  </strong>
+
+
+                  <small>
+                    Cartão de crédito
+                  </small>
+
+                </div>
+
+
+              </div>
+
+
+            </td>
+
+
+            <!-- VALOR -->
+
+            <td>
+
+              <strong
+                      th:text="${#numbers.formatCurrency(
+                                    gasto.valor
+                                    )}">
+
+                R$ 0,00
+
+              </strong>
+
+
+              <!-- VALOR COM JUROS -->
+
+              <small
+                      th:if="${gasto.possuiJuros
+                                    && gasto.valorTotalComJuros > 0}"
+                      th:text="'Total com juros: '
+                                    + ${#numbers.formatCurrency(
+                                    gasto.valorTotalComJuros
+                                    )}">
 
               </small>
 
             </td>
 
 
-            <td
-                    th:text=
-                            "${#numbers.formatCurrency(
-                                        gasto.valor
-                                        )}">
+            <!-- PARCELAMENTO -->
+
+            <td>
+
+
+              <!-- PARCELADO -->
+
+              <span
+                      class="installment-badge"
+                      th:if="${gasto.parcelado}"
+                      th:text="${gasto.quantidadeParcelas}
+                                    + 'x'">
+
+                                3x
+
+                            </span>
+
+
+              <!-- NÃO PARCELADO -->
+
+              <span
+                      class="installment-badge single"
+                      th:if="${!gasto.parcelado}">
+
+                                À vista
+
+                            </span>
+
 
             </td>
 
 
+            <!-- AÇÕES -->
+
             <td class="actions">
 
 
+              <!-- VER PARCELAS -->
+
               <a
-                      th:href=
-                              "@{/gastos/{id}/parcelas(
-                                            id=${gasto.id}
-                                            )}">
+                      th:href="@{/gastos/{id}/parcelas(
+                                    id=${gasto.id}
+                                    )}">
 
                 Parcelas
 
               </a>
 
 
+              <!-- EDITAR -->
+
               <a
-                      th:href=
-                              "@{/gastos/editar/{id}(
-                                            id=${gasto.id}
-                                            )}">
+                      th:href="@{/gastos/editar/{id}(
+                                    id=${gasto.id}
+                                    )}">
 
                 Editar
 
               </a>
 
 
+              <!-- EXCLUIR -->
+
               <a
                       class="danger-link"
-                      th:href=
-                              "@{/gastos/excluir/{id}(
-                                            id=${gasto.id}
-                                            )}"
-                      onclick=
-                              "return confirm(
-                                            'Deseja excluir este gasto?'
-                                            )">
+                      th:href="@{/gastos/excluir/{id}(
+                                    id=${gasto.id}
+                                    )}"
+                      onclick="return confirm(
+                                    'Deseja realmente excluir este gasto?'
+                                    )">
 
                 Excluir
 
               </a>
 
+
             </td>
+
 
           </tr>
 
+
           </tbody>
+
 
         </table>
 
+
       </div>
+
 
     </div>
 
+
   </main>
 
+
 </div>
+
 
 </body>
 
