@@ -30,6 +30,10 @@
     box-sizing: border-box;
 }
 
+html {
+    background: var(--bg);
+}
+
 body {
     margin: 0;
 
@@ -102,6 +106,9 @@ a {
     width: 34px;
     height: 34px;
 
+    min-width: 34px;
+    min-height: 34px;
+
     display: flex;
 
     align-items: center;
@@ -138,10 +145,13 @@ a {
 }
 
 
-/* MENU */
+/* =========================================
+   MENU
+========================================= */
 
 .sidebar-nav {
     display: flex;
+
     flex-direction: column;
 
     gap: 5px;
@@ -151,6 +161,7 @@ a {
     min-height: 40px;
 
     display: flex !important;
+
     flex-direction: row !important;
 
     align-items: center;
@@ -170,30 +181,25 @@ a {
     transform: translateX(2px);
 }
 
-
-/* ÍCONES LATERAIS */
-
 .nav-item svg {
     width: 14px !important;
     height: 14px !important;
 
-    min-width: 14px;
-    max-width: 14px;
+    min-width: 14px !important;
+    max-width: 14px !important;
 
-    min-height: 14px;
-    max-height: 14px;
+    min-height: 14px !important;
+    max-height: 14px !important;
 
-    flex-shrink: 0;
+    display: block !important;
 
-    display: block;
+    flex-shrink: 0 !important;
 
-    fill: var(--accent);
-
-    opacity: 1;
+    fill: var(--accent) !important;
 }
 
 .nav-item:hover svg {
-    fill: white;
+    fill: white !important;
 }
 
 .nav-item span {
@@ -209,7 +215,9 @@ a {
 }
 
 
-/* RODAPÉ */
+/* =========================================
+   RODAPÉ SIDEBAR
+========================================= */
 
 .sidebar-footer {
     display: flex;
@@ -244,6 +252,8 @@ a {
 .user-circle {
     width: 30px;
     height: 30px;
+
+    min-width: 30px;
 
     display: flex;
 
@@ -471,6 +481,14 @@ a {
     color: white;
 }
 
+.section-description {
+    margin: 5px 0 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
 .grid-2 {
     display: grid;
 
@@ -483,7 +501,252 @@ a {
 
 
 /* =========================================
-   DASHBOARD
+   DASHBOARD - SALDO ACUMULADO
+========================================= */
+
+.balance-highlight {
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    padding: 25px 27px;
+
+    margin-bottom: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #171c25,
+            #10141a
+        );
+
+    border: 1px solid #2c3441;
+
+    border-radius: 17px;
+
+    box-shadow: var(--shadow);
+}
+
+.balance-highlight > div:first-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    min-width: 0;
+}
+
+.balance-label {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+.balance-value {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--text);
+
+    font-size: 34px;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+.balance-highlight small {
+    margin-top: 4px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* ÍCONE DO SALDO */
+
+.balance-highlight .balance-icon {
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+    max-width: 44px !important;
+
+    min-height: 44px !important;
+    max-height: 44px !important;
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius: 12px;
+
+    background: rgba(142, 162, 255, 0.12);
+
+    border: 1px solid rgba(142, 162, 255, 0.18);
+}
+
+.balance-highlight .balance-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+
+    min-width: 18px !important;
+    max-width: 18px !important;
+
+    min-height: 18px !important;
+    max-height: 18px !important;
+
+    display: block !important;
+
+    position: static !important;
+
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    fill: var(--accent) !important;
+}
+
+.balance-highlight .balance-icon svg path {
+    fill: var(--accent) !important;
+}
+
+
+/* =========================================
+   DASHBOARD - CARDS DE RESUMO
+========================================= */
+
+.dashboard-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
+    gap: 14px;
+}
+
+.summary-card {
+    min-width: 0;
+
+    padding: 19px 20px;
+}
+
+.summary-card-header {
+    display: flex;
+
+    flex-direction: row !important;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.summary-card-header > span:first-child {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.summary-card > strong {
+    display: block;
+
+    margin: 10px 0 6px;
+
+    font-size: 23px;
+
+    letter-spacing: -0.4px;
+}
+
+.summary-card small {
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* INDICADORES */
+
+.summary-dot {
+    width: 8px !important;
+    height: 8px !important;
+
+    min-width: 8px !important;
+    max-width: 8px !important;
+
+    min-height: 8px !important;
+    max-height: 8px !important;
+
+    display: block;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+.summary-dot.income {
+    background: var(--success);
+}
+
+.summary-dot.expense {
+    background: var(--danger);
+}
+
+.summary-dot.invoice {
+    background: var(--accent);
+}
+
+
+/* =========================================
+   CORES DE VALORES
+========================================= */
+
+.positive {
+    color: var(--success) !important;
+}
+
+.negative {
+    color: var(--danger) !important;
+}
+
+.income-value {
+    color: var(--success) !important;
+}
+
+
+/* =========================================
+   DASHBOARD - PAINÉIS
 ========================================= */
 
 .dashboard-grid {
@@ -499,6 +762,8 @@ a {
 }
 
 .dashboard-panel {
+    min-width: 0;
+
     background: var(--surface);
 
     border: 1px solid var(--border);
@@ -543,6 +808,11 @@ a {
     margin: 0 auto;
 
     aspect-ratio: 1;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .chart-center {
@@ -612,6 +882,8 @@ a {
     width: 8px;
     height: 8px;
 
+    min-width: 8px;
+
     flex-shrink: 0;
 
     border-radius: 50%;
@@ -639,6 +911,8 @@ a {
 
     flex-direction: column;
 
+    min-width: 0;
+
     padding: 20px;
 
     background:
@@ -660,9 +934,9 @@ a {
 }
 
 
-/* TOPO */
+/* CABEÇALHO DA FATURA */
 
-.invoice-header {
+.invoice-card .invoice-header {
     display: flex !important;
 
     flex-direction: row !important;
@@ -674,7 +948,7 @@ a {
     gap: 15px;
 }
 
-.invoice-header > div:first-child {
+.invoice-card .invoice-header > div:first-child {
     display: flex;
 
     flex-direction: column;
@@ -701,15 +975,15 @@ a {
 
 /* ÍCONE DA FATURA */
 
-.invoice-icon {
-    width: 32px !important;
-    height: 32px !important;
+.invoice-card .invoice-icon {
+    width: 34px !important;
+    height: 34px !important;
 
-    min-width: 32px !important;
-    max-width: 32px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
 
-    min-height: 32px !important;
-    max-height: 32px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
 
     display: flex !important;
 
@@ -719,11 +993,12 @@ a {
     justify-content: center !important;
 
     flex-shrink: 0 !important;
+    flex-grow: 0 !important;
 
     padding: 0 !important;
     margin: 0 !important;
 
-    overflow: hidden;
+    overflow: hidden !important;
 
     border-radius: 9px;
 
@@ -732,19 +1007,22 @@ a {
     border: 1px solid rgba(142, 162, 255, 0.18);
 }
 
-.invoice-icon svg {
-    width: 14px !important;
-    height: 14px !important;
+.invoice-card .invoice-icon svg {
+    width: 15px !important;
+    height: 15px !important;
 
-    min-width: 14px !important;
-    max-width: 14px !important;
+    min-width: 15px !important;
+    max-width: 15px !important;
 
-    min-height: 14px !important;
-    max-height: 14px !important;
+    min-height: 15px !important;
+    max-height: 15px !important;
 
     display: block !important;
 
     position: static !important;
+
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
 
     margin: 0 !important;
     padding: 0 !important;
@@ -752,15 +1030,15 @@ a {
     fill: var(--accent) !important;
 }
 
-.invoice-icon svg path {
+.invoice-card .invoice-icon svg path {
     fill: var(--accent) !important;
 }
 
 
-/* VALOR */
+/* VALOR DA FATURA */
 
 .invoice-value {
-    margin-top: 22px;
+    margin-top: 20px;
 }
 
 .invoice-value span {
@@ -776,11 +1054,11 @@ a {
 
     margin-top: 4px;
 
-    font-size: 24px;
+    font-size: 23px;
 }
 
 
-/* DATAS */
+/* DATAS DA FATURA */
 
 .invoice-dates {
     display: grid;
@@ -791,7 +1069,7 @@ a {
 
     gap: 10px;
 
-    margin-top: 18px;
+    margin-top: 17px;
 }
 
 .invoice-date-box {
@@ -818,6 +1096,8 @@ a {
     font-size: 9px;
 
     text-transform: uppercase;
+
+    letter-spacing: 0.4px;
 }
 
 .invoice-date-box strong {
@@ -1023,6 +1303,8 @@ td small {
 
 .actions {
     text-align: right;
+
+    white-space: nowrap;
 }
 
 .actions a {
@@ -1086,9 +1368,6 @@ td small {
     font-size: 10px;
 }
 
-
-/* ÍCONE PAGAMENTO */
-
 .payment-mini-icon {
     width: 28px !important;
     height: 28px !important;
@@ -1124,9 +1403,6 @@ td small {
     font-weight: 800;
 }
 
-
-/* CARTÃO NA TABELA */
-
 .payment-mini-icon.credit {
     background: rgba(142, 162, 255, 0.12);
 
@@ -1152,6 +1428,10 @@ td small {
     margin: 0 !important;
     padding: 0 !important;
 
+    fill: var(--accent) !important;
+}
+
+.payment-mini-icon.credit svg path {
     fill: var(--accent) !important;
 }
 
@@ -1352,6 +1632,8 @@ td small {
     width: 32px;
     height: 32px;
 
+    min-width: 32px;
+
     display: flex;
 
     align-items: center;
@@ -1418,6 +1700,8 @@ td small {
 .payment-icon {
     width: 32px;
     height: 32px;
+
+    min-width: 32px;
 
     display: flex;
 
@@ -1520,18 +1804,22 @@ td small {
     width: 38px !important;
     height: 38px !important;
 
-    min-width: 38px;
-    max-width: 38px;
+    min-width: 38px !important;
+    max-width: 38px !important;
 
-    min-height: 38px;
-    max-height: 38px;
+    min-height: 38px !important;
+    max-height: 38px !important;
 
     display: flex !important;
 
     align-items: center;
     justify-content: center;
 
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
+
+    padding: 0 !important;
+
+    overflow: hidden;
 
     border-radius: 10px;
 
@@ -1544,15 +1832,19 @@ td small {
     width: 17px !important;
     height: 17px !important;
 
-    min-width: 17px;
-    max-width: 17px;
+    min-width: 17px !important;
+    max-width: 17px !important;
 
-    min-height: 17px;
-    max-height: 17px;
+    min-height: 17px !important;
+    max-height: 17px !important;
 
-    display: block;
+    display: block !important;
 
-    fill: var(--accent);
+    fill: var(--accent) !important;
+}
+
+.credit-card-icon svg path {
+    fill: var(--accent) !important;
 }
 
 
@@ -1720,15 +2012,23 @@ td small {
 }
 
 .future-icon {
-    width: 32px;
-    height: 32px;
+    width: 32px !important;
+    height: 32px !important;
 
-    display: flex;
+    min-width: 32px !important;
+    max-width: 32px !important;
+
+    min-height: 32px !important;
+    max-height: 32px !important;
+
+    display: flex !important;
 
     align-items: center;
     justify-content: center;
 
     flex-shrink: 0;
+
+    overflow: hidden;
 
     border-radius: 8px;
 
@@ -1739,11 +2039,25 @@ td small {
     width: 14px !important;
     height: 14px !important;
 
-    fill: var(--accent);
+    min-width: 14px !important;
+    max-width: 14px !important;
+
+    min-height: 14px !important;
+    max-height: 14px !important;
+
+    display: block !important;
+
+    fill: var(--accent) !important;
+}
+
+.future-icon svg path {
+    fill: var(--accent) !important;
 }
 
 
-/* STATUS FUTURO */
+/* =========================================
+   STATUS COMPRAS FUTURAS
+========================================= */
 
 .future-status {
     display: inline-block;
@@ -1774,7 +2088,9 @@ td small {
 }
 
 
-/* VALOR */
+/* =========================================
+   VALORES COMPRAS FUTURAS
+========================================= */
 
 .future-value {
     margin-top: 23px;
@@ -1825,7 +2141,9 @@ td small {
 }
 
 
-/* AÇÕES FUTURO */
+/* =========================================
+   AÇÕES COMPRAS FUTURAS
+========================================= */
 
 .future-actions {
     display: flex;
@@ -1865,7 +2183,44 @@ td small {
 
 
 /* =========================================
-   RESPONSIVO
+   PROTEÇÃO CONTRA SVGs GIGANTES
+========================================= */
+
+/*
+ * Evita que SVGs importantes assumam
+ * larguras ou alturas inesperadas.
+ */
+
+.nav-item svg,
+.balance-icon svg,
+.invoice-icon svg,
+.payment-mini-icon svg,
+.credit-card-icon svg,
+.future-icon svg {
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+
+/* =========================================
+   RESPONSIVO - 1150px
+========================================= */
+
+@media (max-width: 1150px) {
+
+    .dashboard-summary {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVO - 1000px
 ========================================= */
 
 @media (max-width: 1000px) {
@@ -1876,6 +2231,10 @@ td small {
 
 }
 
+
+/* =========================================
+   RESPONSIVO - 900px
+========================================= */
 
 @media (max-width: 900px) {
 
@@ -1920,6 +2279,37 @@ td small {
 }
 
 
+/* =========================================
+   RESPONSIVO - 650px
+========================================= */
+
+@media (max-width: 650px) {
+
+    .dashboard-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .balance-highlight {
+        align-items: flex-start;
+
+        padding: 20px;
+    }
+
+    .balance-value {
+        font-size: 28px;
+    }
+
+    .invoice-dates {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVO - 600px
+========================================= */
+
 @media (max-width: 600px) {
 
     .page-header {
@@ -1940,17 +2330,33 @@ td small {
         width: 100%;
     }
 
-    .credit-card-dates,
-    .invoice-dates {
+    .credit-card-dates {
         grid-template-columns: 1fr;
     }
 
-    /* =========================================
-       RECEITAS
-    ========================================= */
-
-    .income-value {
-        color: var(--success);
+    .balance-highlight {
+        gap: 15px;
     }
 
+    .balance-highlight .balance-icon {
+        width: 38px !important;
+        height: 38px !important;
+
+        min-width: 38px !important;
+        max-width: 38px !important;
+
+        min-height: 38px !important;
+        max-height: 38px !important;
+    }
+
+    .balance-highlight .balance-icon svg {
+        width: 16px !important;
+        height: 16px !important;
+
+        min-width: 16px !important;
+        max-width: 16px !important;
+
+        min-height: 16px !important;
+        max-height: 16px !important;
+    }
 }

@@ -27,13 +27,13 @@
 <div class="layout">
 
 
-    <!-- MENU LATERAL -->
+    <!-- MENU -->
 
     <div th:replace="~{fragments/menu :: menu}">
     </div>
 
 
-    <!-- CONTEÚDO PRINCIPAL -->
+    <!-- CONTEÚDO -->
 
     <main class="content">
 
@@ -66,22 +66,28 @@
         </div>
 
 
-        <!-- CARDS SUPERIORES -->
+        <!-- =========================================
+             SALDO ACUMULADO
+        ========================================== -->
 
-        <section class="cards cards-2">
+        <section class="balance-highlight">
 
 
-            <!-- TOTAL DO MÊS -->
+            <div>
 
-            <article class="card hero-card">
-
-                <span>
-                    Gastos do mês
+                <span class="balance-label">
+                    Saldo acumulado
                 </span>
 
 
                 <strong
-                        th:text="${#numbers.formatCurrency(totalMes)}">
+                        class="balance-value"
+                        th:classappend="${saldoAcumulado < 0}
+                        ? ' negative'
+                        : ' positive'"
+                        th:text="${#numbers.formatCurrency(
+                        saldoAcumulado
+                        )}">
 
                     R$ 0,00
 
@@ -89,23 +95,163 @@
 
 
                 <small>
-                    Total previsto para este mês
+                    Resultado de todas as entradas e gastos até hoje
+                </small>
+
+            </div>
+
+
+            <div class="balance-icon">
+
+                <svg
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                    <path
+                            d="M21 7H3V5h18v2zm0 2H3c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2zm-2 7h-6v-2h6v2z"/>
+
+                </svg>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =========================================
+             RESUMO DO MÊS
+        ========================================== -->
+
+        <section class="cards dashboard-summary">
+
+
+            <!-- ENTRADAS -->
+
+            <article class="card summary-card">
+
+                <div class="summary-card-header">
+
+                    <span>
+                        Entradas do mês
+                    </span>
+
+                    <span class="summary-dot income">
+                    </span>
+
+                </div>
+
+
+                <strong
+                        class="income-value"
+                        th:text="${#numbers.formatCurrency(
+                        receitasMes
+                        )}">
+
+                    R$ 0,00
+
+                </strong>
+
+
+                <small>
+                    Receitas registradas no mês atual
                 </small>
 
             </article>
 
 
-            <!-- QUANTIDADE DE FATURAS -->
+            <!-- GASTOS -->
 
-            <article class="card">
+            <article class="card summary-card">
 
-                <span>
-                    Faturas próximas
-                </span>
+                <div class="summary-card-header">
+
+                    <span>
+                        Gastos do mês
+                    </span>
+
+                    <span class="summary-dot expense">
+                    </span>
+
+                </div>
 
 
                 <strong
-                        th:text="${#lists.size(faturas)}">
+                        th:text="${#numbers.formatCurrency(
+                        totalMes
+                        )}">
+
+                    R$ 0,00
+
+                </strong>
+
+
+                <small>
+                    Parcelas e gastos previstos no mês
+                </small>
+
+            </article>
+
+
+            <!-- SALDO DO MÊS -->
+
+            <article class="card summary-card">
+
+                <div class="summary-card-header">
+
+                    <span>
+                        Saldo do mês
+                    </span>
+
+                    <span
+                            class="summary-dot"
+                            th:classappend="${saldoMes < 0}
+                            ? ' expense'
+                            : ' income'">
+                    </span>
+
+                </div>
+
+
+                <strong
+                        th:classappend="${saldoMes < 0}
+                        ? ' negative'
+                        : ' positive'"
+                        th:text="${#numbers.formatCurrency(
+                        saldoMes
+                        )}">
+
+                    R$ 0,00
+
+                </strong>
+
+
+                <small>
+                    Entradas menos gastos deste mês
+                </small>
+
+            </article>
+
+
+            <!-- FATURAS -->
+
+            <article class="card summary-card">
+
+                <div class="summary-card-header">
+
+                    <span>
+                        Faturas próximas
+                    </span>
+
+                    <span class="summary-dot invoice">
+                    </span>
+
+                </div>
+
+
+                <strong
+                        th:text="${#lists.size(
+                        faturas
+                        )}">
 
                     0
 
@@ -113,7 +259,7 @@
 
 
                 <small>
-                    Cartões com vencimentos próximos
+                    Faturas previstas nos próximos dias
                 </small>
 
             </article>
@@ -122,7 +268,9 @@
         </section>
 
 
-        <!-- FATURAS -->
+        <!-- =========================================
+             FATURAS
+        ========================================== -->
 
         <section
                 class="section"
@@ -137,6 +285,10 @@
                         Faturas dos cartões
                     </h2>
 
+                    <p class="section-description">
+                        Fechamento e vencimento das próximas faturas
+                    </p>
+
                 </div>
 
             </div>
@@ -148,12 +300,13 @@
                 <article
                         th:each="fatura : ${faturas}"
                         class="invoice-card"
-                        th:classappend="${fatura.proxima || fatura.pertoDeFechar}
+                        th:classappend="${fatura.proxima
+                        || fatura.pertoDeFechar}
                         ? ' invoice-warning'
                         : ''">
 
 
-                    <!-- TOPO -->
+                    <!-- CABEÇALHO FATURA -->
 
                     <div class="invoice-header">
 
@@ -177,7 +330,9 @@
 
                         <div class="invoice-icon">
 
-                            <svg viewBox="0 0 24 24">
+                            <svg
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
 
                                 <path
                                         d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
@@ -187,10 +342,7 @@
                         </div>
 
 
-                    </div>
-
-
-                    <!-- VALOR DA FATURA -->
+                    <!-- VALOR -->
 
                     <div class="invoice-value">
 
@@ -246,7 +398,9 @@
 
                             <small
                                     th:if="${fatura.diasParaFechamento < 0}">
+
                                 Fatura fechada
+
                             </small>
 
                         </div>
@@ -273,7 +427,6 @@
 
 
                             <small
-                                    th:if="${fatura.diasParaVencimento >= 0}"
                                     th:text="${fatura.diasParaVencimento}
                                     + ' dia(s) para vencer'">
 
@@ -291,7 +444,7 @@
                             class="invoice-alert closing"
                             th:if="${fatura.pertoDeFechar}">
 
-                        Atenção: esta fatura está próxima do fechamento.
+                        Esta fatura está próxima do fechamento.
 
                     </div>
 
@@ -300,7 +453,7 @@
                             class="invoice-alert due"
                             th:if="${fatura.proxima}">
 
-                        Atenção: esta fatura está próxima do vencimento.
+                        Esta fatura está próxima do vencimento.
 
                     </div>
 
@@ -323,13 +476,11 @@
 
             <div class="dashboard-panel">
 
-
                 <div class="empty-state">
 
                     Nenhuma fatura prevista nos próximos dias.
 
                 </div>
-
 
             </div>
 
@@ -337,7 +488,9 @@
         </section>
 
 
-        <!-- ÁREA PRINCIPAL -->
+        <!-- =========================================
+             GRÁFICO + ÚLTIMOS GASTOS
+        ========================================== -->
 
         <section class="dashboard-grid">
 
@@ -360,36 +513,37 @@
                 </div>
 
 
-                <!-- SEM GASTOS -->
+                <!-- SEM DADOS -->
 
                 <div
-                        th:if="${#maps.isEmpty(gastosCategoria)}"
-                        class="empty-state">
+                        class="empty-state"
+                        th:if="${#maps.isEmpty(
+                        gastosCategoria
+                        )}">
 
                     Nenhum gasto cadastrado neste mês.
 
                 </div>
 
 
-                <!-- COM GASTOS -->
+                <!-- COM DADOS -->
 
                 <div
-                        th:if="${!#maps.isEmpty(gastosCategoria)}">
+                        th:if="${!#maps.isEmpty(
+                        gastosCategoria
+                        )}">
 
 
                     <div class="chart-container">
-
 
                         <canvas id="graficoCategorias">
                         </canvas>
 
 
-                        <!-- CENTRO -->
-
                         <div class="chart-center">
 
                             <span>
-                                Total
+                                Gastos
                             </span>
 
 
@@ -403,7 +557,6 @@
                             </strong>
 
                         </div>
-
 
                     </div>
 
@@ -420,10 +573,8 @@
 
                             <div class="category-info">
 
-
                                 <span class="category-color">
                                 </span>
-
 
                                 <span
                                         th:text="${item.key}">
@@ -431,7 +582,6 @@
                                     Categoria
 
                                 </span>
-
 
                             </div>
 
@@ -484,7 +634,6 @@
                         Ver todos
                     </a>
 
-
                 </div>
 
 
@@ -492,8 +641,10 @@
 
 
                     <div
-                            th:if="${#lists.isEmpty(ultimosGastos)}"
-                            class="empty-state">
+                            class="empty-state"
+                            th:if="${#lists.isEmpty(
+                            ultimosGastos
+                            )}">
 
                         Nenhum gasto cadastrado.
 
@@ -501,8 +652,8 @@
 
 
                     <div
-                            th:each="gasto : ${ultimosGastos}"
-                            class="list-row">
+                            class="list-row"
+                            th:each="gasto : ${ultimosGastos}">
 
 
                         <div>
@@ -521,7 +672,7 @@
                                     'dd/MM/yyyy'
                                     )}">
 
-                                14/09/2026
+                                15/09/2026
 
                             </span>
 
@@ -556,7 +707,9 @@
 </div>
 
 
-<!-- GRÁFICO -->
+<!-- =========================================
+     GRÁFICO
+========================================== -->
 
 <script th:inline="javascript">
 
@@ -579,23 +732,14 @@
     const cores = [
 
         "#7C8CFF",
-
         "#56D6A9",
-
         "#FFBA69",
-
         "#ED6A8A",
-
         "#62C5F5",
-
         "#B58CFF",
-
         "#E7DB6E",
-
         "#6EE7DC",
-
         "#FF8F70",
-
         "#9DD86C"
 
     ];
@@ -696,10 +840,8 @@
                                                     numero
                                                 ) {
 
-                                                    return (
-                                                        acumulador
-                                                        + numero
-                                                    );
+                                                    return acumulador
+                                                        + numero;
 
                                                 },
 
@@ -739,19 +881,12 @@
 
 
                                         return (
-
                                             context.label
-
                                             + ": "
-
                                             + valorFormatado
-
                                             + " ("
-
                                             + percentual.toFixed(1)
-
                                             + "%)"
-
                                         );
 
                                     }
@@ -770,7 +905,7 @@
 
 
         /*
-         * Cores da legenda
+         * CORES DA LEGENDA
          */
 
         const marcadores =
