@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>
+    Receitas | Finance
+  </title>
+
+  <link rel="stylesheet"
+        th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+
+<div class="layout">
+
+
+  <!-- MENU -->
+
+  <div th:replace="~{fragments/menu :: menu}">
+  </div>
+
+
+  <!-- CONTEÚDO -->
+
+  <main class="content">
+
+
+    <!-- CABEÇALHO -->
+
+    <div class="page-header">
+
+      <div>
+
+        <p class="eyebrow">
+          Entradas
+        </p>
+
+        <h1>
+          Receitas
+        </h1>
+
+      </div>
+
+    </div>
+
+
+    <!-- TOTAL DO MÊS -->
+
+    <section class="cards">
+
+      <article class="card hero-card">
+
+                <span>
+                    Entradas deste mês
+                </span>
+
+        <strong
+                th:text="${#numbers.formatCurrency(totalMes)}">
+
+          R$ 0,00
+
+        </strong>
+
+        <small>
+          Total recebido no mês atual
+        </small>
+
+      </article>
+
+    </section>
+
+
+    <!-- FORMULÁRIO -->
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <div>
+
+          <h2>
+            Nova receita
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <form
+              class="form-card"
+              th:action="@{/receitas/salvar}"
+              th:object="${novaReceita}"
+              method="post">
+
+
+        <input
+                type="hidden"
+                th:field="*{id}">
+
+
+        <div class="form-grid">
+
+
+          <!-- DESCRIÇÃO -->
+
+          <div class="field">
+
+            <label for="descricao">
+              Descrição
+            </label>
+
+            <input
+                    id="descricao"
+                    type="text"
+                    th:field="*{descricao}"
+                    placeholder="Ex.: Salário"
+                    required>
+
+          </div>
+
+
+          <!-- VALOR -->
+
+          <div class="field">
+
+            <label for="valor">
+              Valor
+            </label>
+
+            <input
+                    id="valor"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    th:field="*{valor}"
+                    placeholder="0,00"
+                    required>
+
+          </div>
+
+
+          <!-- DATA -->
+
+          <div class="field">
+
+            <label for="data">
+              Data
+            </label>
+
+            <input
+                    id="data"
+                    type="date"
+                    th:field="*{data}">
+
+          </div>
+
+
+          <!-- TIPO -->
+
+          <div class="field">
+
+            <label for="tipo">
+              Tipo
+            </label>
+
+            <select
+                    id="tipo"
+                    th:field="*{tipo}"
+                    required>
+
+              <option value="">
+                Selecione
+              </option>
+
+              <option
+                      th:each="tipo : ${tipos}"
+                      th:value="${tipo}"
+                      th:text="${tipo.descricao}">
+
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- OBSERVAÇÃO -->
+
+          <div class="field field-full">
+
+            <label for="observacao">
+              Observação
+            </label>
+
+            <textarea
+                    id="observacao"
+                    th:field="*{observacao}"
+                    rows="3"
+                    placeholder="Opcional">
+                        </textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+                  type="submit"
+                  class="btn btn-primary">
+
+            Salvar receita
+
+          </button>
+
+        </div>
+
+
+      </form>
+
+    </section>
+
+
+    <!-- LISTA -->
+
+    <section class="section">
+
+
+      <div class="section-title">
+
+        <div>
+
+          <h2>
+            Receitas cadastradas
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="table-card">
+
+
+        <!-- VAZIO -->
+
+        <div
+                class="empty-state"
+                th:if="${#lists.isEmpty(receitas)}">
+
+          Nenhuma receita cadastrada.
+
+        </div>
+
+
+        <!-- TABELA -->
+
+        <div
+                class="table-responsive"
+                th:if="${!#lists.isEmpty(receitas)}">
+
+
+          <table>
+
+
+            <thead>
+
+            <tr>
+
+              <th>
+                Descrição
+              </th>
+
+              <th>
+                Data
+              </th>
+
+              <th>
+                Tipo
+              </th>
+
+              <th>
+                Valor
+              </th>
+
+              <th>
+              </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+            <tr th:each="receita : ${receitas}">
+
+
+              <!-- DESCRIÇÃO -->
+
+              <td>
+
+                <strong
+                        th:text="${receita.descricao}">
+
+                  Salário
+
+                </strong>
+
+                <small
+                        th:if="${receita.observacao != null
+                                        && !receita.observacao.isBlank()}"
+                        th:text="${receita.observacao}">
+
+                  Observação
+
+                </small>
+
+              </td>
+
+
+              <!-- DATA -->
+
+              <td
+                      th:text="${#temporals.format(
+                                    receita.data,
+                                    'dd/MM/yyyy'
+                                    )}">
+
+                15/09/2026
+
+              </td>
+
+
+              <!-- TIPO -->
+
+              <td>
+
+                                <span
+                                        th:text="${receita.tipo.descricao}">
+
+                                    Salário
+
+                                </span>
+
+              </td>
+
+
+              <!-- VALOR -->
+
+              <td>
+
+                <strong
+                        class="income-value"
+                        th:text="${#numbers.formatCurrency(
+                                        receita.valor
+                                        )}">
+
+                  R$ 0,00
+
+                </strong>
+
+              </td>
+
+
+              <!-- EXCLUIR -->
+
+              <td class="actions">
+
+                <a
+                        class="danger-link"
+                        th:href="@{/receitas/excluir/{id}(
+                                        id=${receita.id}
+                                        )}"
+                        onclick="return confirm(
+                                        'Deseja realmente excluir esta receita?'
+                                        )">
+
+                  Excluir
+
+                </a>
+
+              </td>
+
+
+            </tr>
+
+
+            </tbody>
+
+
+          </table>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+</div>
+
+
+</body>
+
+</html>

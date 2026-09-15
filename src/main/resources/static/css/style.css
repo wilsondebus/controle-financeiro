@@ -1945,4 +1945,12 @@ td small {
         grid-template-columns: 1fr;
     }
 
+    /* =========================================
+       RECEITAS
+    ========================================= */
+
+    .income-value {
+        color: var(--success);
+    }
+
 }
