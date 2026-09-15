@@ -1,1 +1,8 @@
-[]
+[ {
+  "dataPrevista" : "2026-11-10",
+  "descricao" : "Mousepad",
+  "id" : 1,
+  "observacao" : "Aguardar até aliviar as contas ",
+  "realizada" : false,
+  "valorEstimado" : 120.0
+} ]
