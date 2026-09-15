@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html><!DOCTYPE html>
-
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org">
 
@@ -32,13 +22,16 @@
 
 <div class="layout">
 
+
   <!-- MENU -->
 
   <div th:replace="~{fragments/menu :: menu}">
   </div>
 
 
-  <main class="content narrow">
+  <!-- CONTEÚDO -->
+
+  <main class="content">
 
 
     <!-- CABEÇALHO -->
@@ -52,50 +45,84 @@
         </p>
 
         <h1>
-          Formas de pagamento
+          Pagamentos
         </h1>
 
-      </div>
-
-
-      <a class="btn btn-secondary"
-         th:href="@{/cartoes}">
-
-        Gerenciar cartões
-
-      </a>
-
-    </div>
-
-
-    <!-- CADASTRO -->
-
-    <div class="dashboard-panel">
-
-
-      <div class="panel-header">
-
-        <h2>
-          Nova forma de pagamento
-        </h2>
-
-        <p>
-          Cadastre as formas que você utiliza no dia a dia.
+        <p class="section-description">
+          Gerencie suas formas de pagamento e seus cartões.
         </p>
 
       </div>
 
-
-      <form
-              th:action="@{/pagamentos/salvar}"
-              th:object="${novaForma}"
-              method="post">
+    </div>
 
 
-        <div class="form-grid">
+    <!-- =========================================
+         FORMAS DE PAGAMENTO
+    ========================================== -->
+
+    <section class="section">
 
 
-          <!-- NOME -->
+      <div class="section-title">
+
+        <div>
+
+          <h2>
+            Formas de pagamento
+          </h2>
+
+          <p class="section-description">
+            PIX, dinheiro, débito e outras formas.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="payments-top-grid">
+
+
+        <!-- NOVA FORMA -->
+
+        <form
+                class="form-card compact-payment-form"
+                th:action="@{/pagamentos/salvar}"
+                th:object="${novaForma}"
+                method="post">
+
+
+          <input
+                  type="hidden"
+                  th:field="*{id}">
+
+
+          <div class="payment-form-header">
+
+
+            <div class="payment-section-icon">
+
+              $
+
+            </div>
+
+
+            <div>
+
+              <h3>
+                Nova forma
+              </h3>
+
+              <p>
+                Cadastre uma nova forma de pagamento.
+              </p>
+
+            </div>
+
+
+          </div>
+
 
           <div class="field">
 
@@ -103,18 +130,15 @@
               Nome
             </label>
 
-
             <input
                     id="nome"
                     type="text"
                     th:field="*{nome}"
-                    placeholder="Ex.: PIX Nubank"
+                    placeholder="Ex.: PIX Sicredi"
                     required>
 
           </div>
 
-
-          <!-- TIPO -->
 
           <div class="field">
 
@@ -122,26 +146,294 @@
               Tipo
             </label>
 
-
             <select
                     id="tipo"
                     th:field="*{tipo}"
                     required>
 
-
               <option value="">
                 Selecione
               </option>
 
-
               <option
                       th:each="tipo : ${tipos}"
+                      th:if="${tipo.name() != 'CREDITO'}"
                       th:value="${tipo}"
                       th:text="${tipo.descricao}">
               </option>
 
-
             </select>
+
+          </div>
+
+
+          <div class="form-actions">
+
+            <button
+                    type="submit"
+                    class="btn btn-primary">
+
+              Salvar forma
+
+            </button>
+
+          </div>
+
+
+        </form>
+
+
+        <!-- FORMAS CADASTRADAS -->
+
+        <div class="payment-list-panel">
+
+
+          <div class="payment-list-title">
+
+            <div>
+
+              <strong>
+                Cadastradas
+              </strong>
+
+              <span>
+                                Formas disponíveis
+                            </span>
+
+            </div>
+
+
+            <div
+                    class="payment-count"
+                    th:text="${#lists.size(formas)}">
+
+              0
+
+            </div>
+
+          </div>
+
+
+          <div
+                  class="empty-state"
+                  th:if="${#lists.isEmpty(formas)}">
+
+            Nenhuma forma cadastrada.
+
+          </div>
+
+
+          <div
+                  class="payment-method-row"
+                  th:each="forma : ${formas}"
+                  th:if="${forma.tipo.name() != 'CREDITO'}">
+
+
+            <div class="payment-method-main">
+
+
+              <div class="payment-icon">
+
+                                <span
+                                        th:text="${forma.tipo.name() == 'PIX'}
+                                        ? 'P'
+                                        : (${forma.tipo.name() == 'DINHEIRO'}
+                                        ? '$'
+                                        : (${forma.tipo.name() == 'DEBITO'}
+                                        ? 'D'
+                                        : '•'))">
+
+                                    P
+
+                                </span>
+
+              </div>
+
+
+              <div>
+
+                <strong
+                        th:text="${forma.nome}">
+
+                  PIX
+
+                </strong>
+
+                <span
+                        th:text="${forma.tipo.descricao}">
+
+                                    PIX
+
+                                </span>
+
+              </div>
+
+
+            </div>
+
+
+            <a
+                    class="danger-link"
+                    th:href="@{/pagamentos/excluir/{id}(id=${forma.id})}"
+                    onclick="return confirm('Deseja realmente excluir esta forma de pagamento?')">
+
+              Excluir
+
+            </a>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =========================================
+         CARTÕES
+    ========================================== -->
+
+    <section class="section">
+
+
+      <div class="section-title">
+
+        <div>
+
+          <h2>
+            Cartões de crédito
+          </h2>
+
+          <p class="section-description">
+            Controle fechamento, vencimento e faturas.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- NOVO CARTÃO -->
+
+      <form
+              class="form-card compact-card-form"
+              th:action="@{/pagamentos/cartao/salvar}"
+              th:object="${novoCartao}"
+              method="post">
+
+
+        <input
+                type="hidden"
+                th:field="*{id}">
+
+
+        <div class="payment-form-header">
+
+
+          <div class="payment-section-icon credit">
+
+
+            <svg
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                      d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+
+            </svg>
+
+
+          </div>
+
+
+          <div>
+
+            <h3>
+              Novo cartão
+            </h3>
+
+            <p>
+              Informe banco, fechamento e vencimento.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <div class="field">
+
+            <label for="nomeCartao">
+              Nome
+            </label>
+
+            <input
+                    id="nomeCartao"
+                    type="text"
+                    th:field="*{nome}"
+                    placeholder="Ex.: Cartão Caixa"
+                    required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="banco">
+              Banco
+            </label>
+
+            <input
+                    id="banco"
+                    type="text"
+                    th:field="*{banco}"
+                    placeholder="Ex.: Caixa"
+                    required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="diaFechamento">
+              Dia de fechamento
+            </label>
+
+            <input
+                    id="diaFechamento"
+                    type="number"
+                    min="1"
+                    max="31"
+                    th:field="*{diaFechamento}"
+                    placeholder="25"
+                    required>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="diaVencimento">
+              Dia de vencimento
+            </label>
+
+            <input
+                    id="diaVencimento"
+                    type="number"
+                    min="1"
+                    max="31"
+                    th:field="*{diaVencimento}"
+                    placeholder="05"
+                    required>
 
           </div>
 
@@ -155,7 +447,7 @@
                   type="submit"
                   class="btn btn-primary">
 
-            + Adicionar
+            Salvar cartão
 
           </button>
 
@@ -165,75 +457,114 @@
       </form>
 
 
-    </div>
+      <!-- SEM CARTÕES -->
 
+      <div
+              class="empty-state card-empty"
+              th:if="${#lists.isEmpty(cartoes)}">
 
-    <!-- LISTA -->
-
-    <section class="section">
-
-
-      <div class="section-title">
-
-        <div>
-
-          <h2>
-            Formas cadastradas
-          </h2>
-
-        </div>
+        Nenhum cartão cadastrado.
 
       </div>
 
 
-      <div class="list-card">
+      <!-- CARTÕES -->
+
+      <div
+              class="payment-card-grid"
+              th:if="${!#lists.isEmpty(cartoes)}">
 
 
-        <div
-                th:if="${#lists.isEmpty(formas)}"
-                class="empty-state">
-
-          Nenhuma forma de pagamento cadastrada.
-
-        </div>
+        <article
+                class="credit-card payment-credit-card"
+                th:each="cartao : ${cartoes}">
 
 
-        <div
-                th:each="forma : ${formas}"
-                class="list-row">
+          <div class="credit-card-top">
 
 
-          <div class="payment-info">
+            <div>
+
+                            <span>
+                                Cartão de crédito
+                            </span>
+
+              <h3
+                      th:text="${cartao.nome}">
+
+                Cartão Caixa
+
+              </h3>
+
+            </div>
 
 
-            <div
-                    class="payment-icon"
-                    th:text="${forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).PIX ? 'P' :
-                                         forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).CREDITO ? 'C' :
-                                         forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).DEBITO ? 'D' :
-                                         forma.tipo == T(br.com.financeiro.controlefinanceiro.model.TipoPagamento).DINHEIRO ? '$' : '?'}">
+            <div class="credit-card-icon">
 
-              $
+
+              <svg
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                        d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+
+              </svg>
+
+
+            </div>
+
+
+          </div>
+
+
+          <div class="credit-card-bank">
+
+                        <span>
+                            Banco
+                        </span>
+
+            <strong
+                    th:text="${cartao.banco}">
+
+              Caixa
+
+            </strong>
+
+          </div>
+
+
+          <div class="credit-card-dates">
+
+
+            <div>
+
+                            <span>
+                                Fechamento
+                            </span>
+
+              <strong
+                      th:text="'Dia ' + ${cartao.diaFechamento}">
+
+                Dia 25
+
+              </strong>
 
             </div>
 
 
             <div>
 
-              <strong
-                      th:text="${forma.nome}">
+                            <span>
+                                Vencimento
+                            </span>
 
-                PIX Nubank
+              <strong
+                      th:text="'Dia ' + ${cartao.diaVencimento}">
+
+                Dia 05
 
               </strong>
-
-
-              <span
-                      th:text="${forma.tipo.descricao}">
-
-                                PIX
-
-                            </span>
 
             </div>
 
@@ -241,23 +572,21 @@
           </div>
 
 
-          <div class="actions">
-
+          <div class="credit-card-actions">
 
             <a
                     class="danger-link"
-                    th:href="@{/pagamentos/excluir/{id}(id=${forma.id})}"
-                    onclick="return confirm('Deseja excluir esta forma de pagamento?')">
+                    th:href="@{/pagamentos/cartao/excluir/{id}(id=${cartao.id})}"
+                    onclick="return confirm('Deseja realmente excluir este cartão?')">
 
               Excluir
 
             </a>
 
-
           </div>
 
 
-        </div>
+        </article>
 
 
       </div>
