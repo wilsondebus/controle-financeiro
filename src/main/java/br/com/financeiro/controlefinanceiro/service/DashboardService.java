@@ -25,21 +25,50 @@ public class DashboardService {
 
     private final CategoriaService categoriaService;
 
+    private final ReceitaService receitaService;
+
 
     public DashboardService(
             ParcelaService parcelaService,
             GastoService gastoService,
             CartaoService cartaoService,
-            CategoriaService categoriaService
+            CategoriaService categoriaService,
+            ReceitaService receitaService
     ) {
 
         this.parcelaService = parcelaService;
         this.gastoService = gastoService;
         this.cartaoService = cartaoService;
         this.categoriaService = categoriaService;
+        this.receitaService = receitaService;
     }
 
+    public double totalReceitasMesAtual() {
 
+        return receitaService
+                .totalReceitasMesAtual();
+    }
+
+    public double saldoMesAtual() {
+
+        return totalReceitasMesAtual()
+                - totalDoMesAtual();
+    }
+
+    public double saldoAcumulado() {
+
+        double receitas =
+                receitaService
+                        .totalReceitasAteHoje();
+
+
+        double gastos =
+                parcelaService
+                        .totalParcelasAteHoje();
+
+
+        return receitas - gastos;
+    }
     /*
      * TOTAL DO MÊS
      */

@@ -28,15 +28,36 @@ public class DashboardController {
                 dashboardService.totalDoMesAtual()
         );
 
+
+        model.addAttribute(
+                "receitasMes",
+                dashboardService.totalReceitasMesAtual()
+        );
+
+
+        model.addAttribute(
+                "saldoMes",
+                dashboardService.saldoMesAtual()
+        );
+
+
+        model.addAttribute(
+                "saldoAcumulado",
+                dashboardService.saldoAcumulado()
+        );
+
+
         model.addAttribute(
                 "gastosCategoria",
                 dashboardService.gastosPorCategoriaNoMes()
         );
 
+
         model.addAttribute(
                 "faturas",
                 dashboardService.proximasFaturas()
         );
+
 
         model.addAttribute(
                 "ultimosGastos",
@@ -46,6 +67,7 @@ public class DashboardController {
                         .limit(5)
                         .toList()
         );
+
 
         return "dashboard";
     }
