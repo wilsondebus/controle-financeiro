@@ -303,4 +303,34 @@ public class ParcelaService {
             );
         }
     }
+
+    public double totalParcelasAteHoje() {
+
+        LocalDate hoje =
+                LocalDate.now();
+
+
+        return listar()
+                .stream()
+
+                .filter(
+                        parcela ->
+                                parcela.getVencimento()
+                                        != null
+                )
+
+                .filter(
+                        parcela ->
+                                !parcela
+                                        .getVencimento()
+                                        .isAfter(hoje)
+                )
+
+                .mapToDouble(
+                        Parcela::getValor
+                )
+
+                .sum();
+    }
+
 }
