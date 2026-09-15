@@ -18,13 +18,9 @@ import java.util.Map;
 public class DashboardService {
 
     private final ParcelaService parcelaService;
-
     private final GastoService gastoService;
-
     private final CartaoService cartaoService;
-
     private final CategoriaService categoriaService;
-
     private final ReceitaService receitaService;
 
 
@@ -43,36 +39,13 @@ public class DashboardService {
         this.receitaService = receitaService;
     }
 
-    public double totalReceitasMesAtual() {
 
-        return receitaService
-                .totalReceitasMesAtual();
-    }
-
-    public double saldoMesAtual() {
-
-        return totalReceitasMesAtual()
-                - totalDoMesAtual();
-    }
-
-    public double saldoAcumulado() {
-
-        double receitas =
-                receitaService
-                        .totalReceitasAteHoje();
-
-
-        double gastos =
-                parcelaService
-                        .totalParcelasAteHoje();
-
-
-        return receitas - gastos;
-    }
     /*
-     * TOTAL DO MÊS
+     * Total de gastos do mês atual.
+     *
+     * O cálculo considera as parcelas que vencem
+     * no mês atual.
      */
-
     public double totalDoMesAtual() {
 
         YearMonth mesAtual =
@@ -106,11 +79,62 @@ public class DashboardService {
 
 
     /*
-     * GASTOS POR CATEGORIA
+     * Total de receitas do mês atual.
      */
+    public double totalReceitasMesAtual() {
 
-    public Map<String, Double>
-    gastosPorCategoriaNoMes() {
+        return receitaService
+                .totalReceitasMesAtual();
+    }
+
+
+    /*
+     * Saldo apenas do mês atual.
+     *
+     * Exemplo:
+     *
+     * Receita: 3000
+     * Gastos: 1800
+     *
+     * Saldo do mês: 1200
+     */
+    public double saldoMesAtual() {
+
+        return totalReceitasMesAtual()
+                - totalDoMesAtual();
+    }
+
+
+    /*
+     * Saldo acumulado.
+     *
+     * Considera:
+     *
+     * todas as receitas até hoje
+     * -
+     * todas as parcelas com vencimento até hoje
+     */
+    public double saldoAcumulado() {
+
+        double receitas =
+                receitaService
+                        .totalReceitasAteHoje();
+
+
+        double gastos =
+                parcelaService
+                        .totalParcelasAteHoje();
+
+
+        return receitas - gastos;
+    }
+
+
+    /*
+     * Gastos agrupados por categoria
+     * no mês atual.
+     */
+    public Map<String, Double> gastosPorCategoriaNoMes() {
 
         YearMonth mesAtual =
                 YearMonth.now();
@@ -120,10 +144,11 @@ public class DashboardService {
                 new LinkedHashMap<>();
 
 
-        for (
-                Parcela parcela :
-                parcelaService.listar()
-        ) {
+        List<Parcela> parcelas =
+                parcelaService.listar();
+
+
+        for (Parcela parcela : parcelas) {
 
             if (parcela.getVencimento() == null) {
                 continue;
@@ -142,9 +167,10 @@ public class DashboardService {
 
 
             Gasto gasto =
-                    gastoService.buscarPorId(
-                            parcela.getGastoId()
-                    );
+                    gastoService
+                            .buscarPorId(
+                                    parcela.getGastoId()
+                            );
 
 
             if (gasto == null) {
@@ -153,9 +179,10 @@ public class DashboardService {
 
 
             String categoria =
-                    categoriaService.nomePorId(
-                            gasto.getCategoriaId()
-                    );
+                    categoriaService
+                            .nomePorId(
+                                    gasto.getCategoriaId()
+                            );
 
 
             resultado.merge(
@@ -171,80 +198,98 @@ public class DashboardService {
 
 
     /*
-     * FATURAS DOS CARTÕES
+     * Retorna as próximas faturas dos cartões.
+     *
+     * São consideradas parcelas não pagas
+     * com vencimento nos próximos 60 dias.
      */
-
-    public List<FaturaResumo>
-    proximasFaturas() {
+    public List<FaturaResumo> proximasFaturas() {
 
         LocalDate hoje =
                 LocalDate.now();
 
 
-        /*
-         * Mostra faturas dos próximos
-         * 60 dias.
-         */
-
         LocalDate limite =
                 hoje.plusDays(60);
 
 
-        Map<String, FaturaResumo> resumo =
+        Map<String, FaturaResumo> faturas =
                 new LinkedHashMap<>();
 
 
-        for (
-                Parcela parcela :
-                parcelaService.listar()
-        ) {
+        for (Parcela parcela : parcelaService.listar()) {
 
+
+            /*
+             * Ignora parcela sem vencimento.
+             */
             if (parcela.getVencimento() == null) {
                 continue;
             }
 
 
+            /*
+             * Ignora parcela já paga.
+             */
             if (parcela.isPaga()) {
                 continue;
             }
 
 
-            if (
-                    parcela
-                            .getVencimento()
-                            .isBefore(hoje)
-            ) {
+            /*
+             * Ignora vencimentos anteriores a hoje.
+             */
+            if (parcela
+                    .getVencimento()
+                    .isBefore(hoje)) {
+
                 continue;
             }
 
 
-            if (
-                    parcela
-                            .getVencimento()
-                            .isAfter(limite)
-            ) {
+            /*
+             * Ignora vencimentos muito distantes.
+             */
+            if (parcela
+                    .getVencimento()
+                    .isAfter(limite)) {
+
                 continue;
             }
 
 
+            /*
+             * Busca o gasto relacionado à parcela.
+             */
             Gasto gasto =
-                    gastoService.buscarPorId(
-                            parcela.getGastoId()
-                    );
+                    gastoService
+                            .buscarPorId(
+                                    parcela.getGastoId()
+                            );
 
 
-            if (
-                    gasto == null
-                            || gasto.getCartaoId() == null
-            ) {
+            if (gasto == null) {
                 continue;
             }
 
 
+            /*
+             * Se o gasto não possui cartão,
+             * ele não pertence a uma fatura.
+             */
+            if (gasto.getCartaoId() == null) {
+                continue;
+            }
+
+
+            /*
+             * Busca o cartão.
+             */
             CartaoCredito cartao =
-                    cartaoService.buscarPorId(
-                            gasto.getCartaoId()
-                    );
+                    cartaoService
+                            .buscarPorId(
+                                    gasto.getCartaoId()
+                            );
 
 
             if (cartao == null) {
@@ -256,10 +301,6 @@ public class DashboardService {
                     parcela.getVencimento();
 
 
-            /*
-             * Descobre quando essa fatura fecha.
-             */
-
             LocalDate fechamento =
                     calcularFechamento(
                             vencimento,
@@ -267,35 +308,36 @@ public class DashboardService {
                     );
 
 
+            long diasParaFechamento =
+                    ChronoUnit.DAYS.between(
+                            hoje,
+                            fechamento
+                    );
+
+
+            long diasParaVencimento =
+                    ChronoUnit.DAYS.between(
+                            hoje,
+                            vencimento
+                    );
+
+
+            /*
+             * Uma fatura é identificada
+             * pelo cartão + data de vencimento.
+             *
+             * Assim duas parcelas do mesmo cartão
+             * e da mesma fatura são somadas.
+             */
             String chave =
                     cartao.getId()
                             + "-"
                             + vencimento;
 
 
-            FaturaResumo existente =
-                    resumo.get(chave);
+            if (!faturas.containsKey(chave)) {
 
-
-            if (existente == null) {
-
-                long diasVencimento =
-                        ChronoUnit.DAYS
-                                .between(
-                                        hoje,
-                                        vencimento
-                                );
-
-
-                long diasFechamento =
-                        ChronoUnit.DAYS
-                                .between(
-                                        hoje,
-                                        fechamento
-                                );
-
-
-                FaturaResumo novaFatura =
+                FaturaResumo resumo =
                         new FaturaResumo(
 
                                 cartao.getId(),
@@ -308,38 +350,41 @@ public class DashboardService {
 
                                 vencimento,
 
-                                diasFechamento,
+                                diasParaFechamento,
 
-                                diasVencimento
+                                diasParaVencimento
 
                         );
 
 
-                resumo.put(
+                faturas.put(
                         chave,
-                        novaFatura
+                        resumo
                 );
 
             } else {
 
-                existente.setValor(
+                FaturaResumo resumo =
+                        faturas.get(chave);
 
-                        existente.getValor()
+
+                resumo.setValor(
+                        resumo.getValor()
                                 + parcela.getValor()
-
                 );
             }
         }
 
 
-        return resumo
+        return faturas
                 .values()
                 .stream()
 
                 .sorted(
-                        Comparator.comparing(
-                                FaturaResumo::getVencimento
-                        )
+                        Comparator
+                                .comparing(
+                                        FaturaResumo::getVencimento
+                                )
                 )
 
                 .toList();
@@ -347,9 +392,17 @@ public class DashboardService {
 
 
     /*
-     * CALCULA O FECHAMENTO DE UMA FATURA
+     * Calcula a data de fechamento
+     * correspondente a uma fatura.
+     *
+     * Exemplo:
+     *
+     * fechamento: dia 25
+     * vencimento: dia 05
+     *
+     * vencimento: 05/10
+     * fechamento: 25/09
      */
-
     private LocalDate calcularFechamento(
             LocalDate vencimento,
             CartaoCredito cartao
@@ -375,19 +428,13 @@ public class DashboardService {
 
 
         /*
-         * Exemplo:
-         *
-         * vence dia 10
-         * fecha dia 25
-         *
-         * então o fechamento pertence
-         * ao mês anterior.
+         * Se o fechamento acontece depois
+         * do dia de vencimento, então o
+         * fechamento pertence ao mês anterior.
          */
+        if (cartao.getDiaFechamento()
+                > vencimento.getDayOfMonth()) {
 
-        if (
-                cartao.getDiaFechamento()
-                        > cartao.getDiaVencimento()
-        ) {
 
             YearMonth mesAnterior =
                     mes.minusMonths(1);

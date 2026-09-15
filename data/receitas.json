@@ -1,1 +1,8 @@
-[]
+[ {
+  "data" : "2026-09-01",
+  "descricao" : "Salário ",
+  "id" : 1,
+  "observacao" : "",
+  "tipo" : "SALARIO",
+  "valor" : 1900.0
+} ]
